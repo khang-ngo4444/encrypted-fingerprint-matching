@@ -1,0 +1,19 @@
+# Thư viện Microsoft, do setup.sh tải về. Không commit: để nguyên ở upstream.
+/SEAL/
+/device/
+/adapter/
+
+# Kết quả build
+/build/
+__pycache__/
+venv/
+
+# Dữ liệu sinh ra khi chạy
+/ct/
+/ct_fvc/
+
+# Ảnh vân tay gốc: FVC2002 có điều khoản hạn chế phát hành lại.
+# Chỉ commit vector đặc trưng đã trích trong data/.
+/raw/
+*.tif
+*.tiff
