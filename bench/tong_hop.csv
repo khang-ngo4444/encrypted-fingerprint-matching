@@ -1,0 +1,49 @@
+nhom,hang_muc,gia_tri,don_vi,do_lech_chuan,min,max,ghi_chu
+Tham so,Luoc do ma hoa,CKKS,,,,,"so thuc xap xi, Microsoft SEAL 4.4.4"
+Tham so,Bac da thuc (degree),4096,,,,,
+Tham so,So prime,3,,,,,"27-bit, kem mot special prime 28-bit"
+Tham so,Scale,2^25,,,,,
+Tham so,Muc bao mat,128,bit,,,,theo Homomorphic Encryption Security Standard
+Tham so,So chieu vector dac trung,512,chieu,,,,FingerCode: 8 huong Gabor x luoi 8x8
+Pipeline,[Thiet bi] Ma hoa truy van,3.1453,ms,0.0603,3.042,3.4452,
+Pipeline,[Mang] Nap ban ma vao SEAL,0.1305,ms,0.0068,0.1212,0.1585,
+Pipeline,[Server] Tinh tren ban ma,22.5144,ms,0.2212,22.4014,23.4232,
+Pipeline,[Giu khoa] Giai ma ket qua,0.7194,ms,0.0179,0.7107,0.7881,
+Pipeline,TONG mot truy van dau-cuoi,26.5097,ms,0.2601,26.3666,27.4756,
+Pipeline,Thiet lap thu vien thiet bi,0.1049,ms,,,,mot lan duy nhat luc khoi dong
+Pipeline,Thong luong,37.7221,truy van/giay,,,,"do tuan tu, mot luong"
+Sinh khoa,Sinh relinearization key,5.7175,ms,0.5137,5.3143,6.2959,
+Sinh khoa,Sinh galois key,50.2149,ms,1.9549,48.1225,51.9948,
+Server (chi tiet),Tru hai vector,0.1294,ms,0.0231,0.1112,0.2172,
+Server (chi tiet),Binh phuong,0.5521,ms,0.0301,0.5372,0.6863,
+Server (chi tiet),Relinearize,3.1861,ms,0.037,3.1639,3.3144,
+Server (chi tiet),Rescale,0.8323,ms,0.0265,0.8232,0.9718,
+Server (chi tiet),Cong don 512 chieu (9 vong xoay),17.8816,ms,0.5069,17.7121,20.4816,
+Server (chi tiet),TONG mot phep so khop,22.5815,ms,0.5191,22.3619,25.1554,
+Server (chi tiet),Giai ma,0.7215,ms,0.013,0.7131,0.7703,
+Server (chi tiet),Doi chung: Euclidean tren ban ro,0.0004,ms,0,0.0004,0.0004,
+Server (chi tiet),Ti trong buoc cong don,79.1869,%,,,,huong toi uu ro nhat neu can tang toc
+Server (chi tiet),He so cham hon so voi ban ro,51866.0667,lan,,,,
+Kich thuoc,Van tay goc,0.5,KB,,,,512 gia tri uint8
+Kich thuoc,Ciphertext gui len server,96,KB,,,,
+Kich thuoc,Relinearization key,0.7504,MB,,,,truyen mot lan luc thiet lap
+Kich thuoc,Galois key,6.7842,MB,,,,truyen mot lan luc thiet lap
+Kich thuoc,He so phinh du lieu,192,lan,,,,
+Do trung thuc,Tap du lieu,FVC2002 DB1_B,,,,,"80 anh van tay that, 10 ngon x 8 lan quet"
+Do trung thuc,So cap da so,3160,cap,,,,
+Do trung thuc,  trong do cung ngon,280,cap,,,,
+Do trung thuc,  trong do khac ngon,2880,cap,,,,
+Do trung thuc,Sai so tuong doi do ma hoa,0.0096,%,0.0091,0,0.2062,ban ma so voi ban ro
+Do trung thuc,Giu dung thu tu xep hang,99.7115,%,,,,6222/6240 cap lien ke
+Do trung thuc,Khoang cach giua hai ban ghi bi dao,0.035,,,,,lon nhat; nho hon sai so ma hoa nen khong doi quyet dinh
+Do trung thuc,Truy van giu nguyen toan bo thu tu,78.75,%,,,,"63/80 truy van, moi truy van xep hang 79 ban ghi"
+Do trung thuc,Truy van giu nguyen ket qua hang 1,100,%,,,,80/80 truy van
+Do trung thuc,So truy van cho ket qua khac ban goc,0,truy van,,,,
+Nhan dang mau,Truy van,101_1,,,,,
+Nhan dang mau,So ban ghi trong CSDL,79,ban ghi,,,,
+Nhan dang mau,So ban ghi bi doi thu hang,0,ban ghi,,,,ban ma so voi ban ro
+Nhan dang mau,Thoi gian quet het CSDL,1838.8403,ms,,,,
+Quy mo,Chi phi moi ban ghi khi quet,23.2338,ms,,,,tinh + giai ma; ma hoa truy van chi lam mot lan
+Quy mo,Quet 1.000 nguoi,23.2338,giay,,,,"che do nhan dang 1:N, quet toan bo co so du lieu"
+Quy mo,Quet 10.000 nguoi,232.3383,giay,,,,"che do nhan dang 1:N, quet toan bo co so du lieu"
+Quy mo,Quet 100.000 nguoi,2323.3835,giay,,,,"che do nhan dang 1:N, quet toan bo co so du lieu"

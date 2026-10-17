@@ -1,0 +1,275 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Báo cáo số liệu — Hệ thống bảo mật dữ liệu vân tay</title>
+<style>
+  :root {
+    --bg:#070f1c; --panel:#0f1f33; --panel2:#132940; --line:#223a56;
+    --fg:#eef4fa; --mut:#8ea4bb; --dim:#5d7891;
+    --ref:#93a7bd;   /* dữ liệu gốc, mốc tham chiếu */
+    --enc:#38bdf8;   /* dữ liệu mã hoá, phần hệ thống này làm */
+    --ok:#35c08a;    /* kết quả đã kiểm chứng đạt */
+    --cost:#e8a33d;  /* chi phí phải trả */
+    --warn:#f07855;  /* giới hạn phạm vi */
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:46px 54px 40px; background:var(--bg); color:var(--fg);
+         font-family:"DejaVu Sans",system-ui,sans-serif; font-size:14.5px; line-height:1.55;
+         -webkit-font-smoothing:antialiased; }
+
+  header { border-bottom:2px solid var(--line); padding-bottom:18px; }
+  h1 { font-size:29px; margin:0 0 5px; letter-spacing:-.4px; font-weight:700; }
+  .sub { color:var(--mut); font-size:14.5px; }
+  .meta { color:#6f879f; font-size:12.5px; margin-top:9px; }
+
+  section { margin-top:38px; }
+  h2 { font-size:17.5px; margin:0 0 3px; font-weight:700; color:var(--fg);
+        display:flex; align-items:baseline; gap:11px; }
+  h2 .n { font-size:12px; font-weight:700; letter-spacing:.1em; padding:3px 8px;
+           border-radius:4px; background:var(--panel2); color:var(--mut); }
+  .s-enc h2 .n { color:var(--enc); }
+  .s-ok  h2 .n { color:var(--ok); }
+  .s-cost h2 .n { color:var(--cost); }
+  .lead { color:var(--mut); margin:10px 0 16px; max-width:1090px; }
+
+  .cards { display:flex; gap:13px; margin:16px 0 4px; }
+  .card { flex:1; background:var(--panel); border:1px solid var(--line);
+           border-top:3px solid var(--line); border-radius:7px; padding:15px 17px; }
+  .card.t-enc  { border-top-color:var(--enc); }
+  .card.t-ok   { border-top-color:var(--ok); }
+  .card.t-cost { border-top-color:var(--cost); }
+  .val { font-size:31px; font-weight:700; line-height:1.15; font-variant-numeric:tabular-nums; }
+  .t-enc .val  { color:var(--enc); }
+  .t-ok .val   { color:var(--ok); }
+  .t-cost .val { color:var(--cost); }
+  .unit { font-size:14px; font-weight:400; color:var(--mut); margin-left:4px; }
+  .lab { font-size:13.5px; font-weight:600; margin-top:5px; }
+  .note { font-size:12px; color:var(--mut); margin-top:3px; line-height:1.45; }
+
+  table { width:100%; border-collapse:collapse; margin-top:14px; font-size:13px;
+           table-layout:fixed; }
+  th { text-align:right; color:var(--mut); font-size:10.5px; letter-spacing:.08em;
+        text-transform:uppercase; font-weight:700; padding:0 12px 9px;
+        border-bottom:1px solid var(--line); white-space:nowrap; }
+  th:first-child { text-align:left; }
+  td { padding:9px 12px; text-align:right; color:var(--mut);
+        border-bottom:1px solid rgba(34,58,86,.45); font-variant-numeric:tabular-nums;
+        white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  td:first-child { text-align:left; color:var(--fg); font-weight:600; }
+  td:last-child { text-align:center; }
+  tr.hit td { background:rgba(53,192,138,.08); }
+  tr.rest td { color:#5a7489; font-style:italic; font-weight:400; }
+  tr:last-child td { border-bottom:none; }
+  .ref  { color:var(--ref); }
+  .enc  { color:var(--enc); font-weight:600; }
+  .cost { color:var(--cost); font-weight:600; }
+  .tag { background:var(--ok); color:#06130d; font-size:10.5px; font-weight:700;
+          padding:2px 9px; border-radius:4px; letter-spacing:.04em; }
+
+  .exp { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--line);
+          border-radius:0 7px 7px 0; padding:13px 17px; margin-top:14px;
+          font-size:13px; color:var(--mut); }
+  .exp b { color:var(--fg); font-weight:600; }
+  .exp.e-ok   { border-left-color:var(--ok); }
+  .exp.e-cost { border-left-color:var(--cost); }
+  .exp.e-warn { border-left-color:var(--warn); }
+  .exp.e-warn b:first-child { color:var(--warn); }
+  .legend { display:flex; gap:22px; margin-top:13px; font-size:12px; color:var(--mut); }
+  .legend i { display:inline-block; width:9px; height:9px; border-radius:2px;
+               margin-right:6px; vertical-align:baseline; }
+  code { font-family:"DejaVu Sans Mono",monospace; font-size:12px; color:var(--fg); }
+  footer { margin-top:40px; padding-top:13px; border-top:1px solid var(--line);
+            color:#6f879f; font-size:12px; }
+</style>
+
+<header>
+  <h1>Hệ thống bảo mật dữ liệu vân tay — Báo cáo số liệu</h1>
+  <div class="sub">So khớp vân tay trên dữ liệu đã mã hoá, máy chủ không giải mã ở bất kỳ bước nào</div>
+  <div class="meta">
+    Đo ngày 18/10/2026 · Raspberry Pi 5, Cortex-A76 4 nhân 2,4 GHz, 8 GB RAM ·
+    Microsoft SEAL 4.4.4 + SEAL-Embedded · CKKS bậc 4096, 3 prime 27-bit,
+    scale 2<sup>25</sup>, mức bảo mật 128-bit · Dữ liệu kiểm chứng FVC2002 DB1_B
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--ref)"></i>dữ liệu gốc</span>
+    <span><i style="background:var(--enc)"></i>dữ liệu mã hoá</span>
+    <span><i style="background:var(--ok)"></i>kết quả đạt</span>
+    <span><i style="background:var(--cost)"></i>chi phí tài nguyên</span>
+    <span><i style="background:var(--warn)"></i>giới hạn phạm vi</span>
+  </div>
+</header>
+
+<section class="s-enc">
+  <h2><span class="n">01</span> Kết quả một lượt nhận dạng</h2>
+  <p class="lead">Mẫu <b>101_1</b> được đem so với <b>79 bản ghi</b> còn lại trong
+  cơ sở dữ liệu. Toàn bộ phép tính chạy trên dữ liệu đã mã hoá. Hai cột
+  <span class="ref">Bản rõ</span> và <span class="enc">Bản mã</span> là cùng một đại lượng —
+  khoảng cách giữa hai mẫu — nhưng tính theo hai cách khác nhau, đặt cạnh nhau để đối chiếu.
+  Bảng hiển thị 12 bản ghi gần nhất; bảng đầy đủ nằm trong <code>match_report.csv</code>.</p>
+
+  <table>
+    <colgroup>
+      <col style="width:13%"><col style="width:12%"><col style="width:12%"><col style="width:11%">
+      <col style="width:9%"><col style="width:9%"><col style="width:11%"><col style="width:11%">
+      <col style="width:12%">
+    </colgroup>
+    <tr>
+      <th>Bản ghi</th><th>Bản rõ</th><th>Bản mã</th><th>Sai lệch %</th>
+      <th>Hạng rõ</th><th>Hạng mã</th><th>Tính ms</th><th>Giải mã ms</th><th></th>
+    </tr>
+    <tr class="hit"><td>101_2</td><td><span class="ref">70,482</span></td><td><span class="enc">70,501</span></td><td>0,0273</td><td>1</td><td>1</td><td>23,09</td><td>0,74</td><td><span class="tag">KHỚP</span></td></tr><tr class=""><td>101_4</td><td><span class="ref">119,228</span></td><td><span class="enc">119,252</span></td><td>0,0207</td><td>2</td><td>2</td><td>22,39</td><td>0,71</td><td></td></tr><tr class=""><td>101_8</td><td><span class="ref">133,322</span></td><td><span class="enc">133,322</span></td><td>0,0001</td><td>3</td><td>3</td><td>22,44</td><td>0,71</td><td></td></tr><tr class=""><td>110_7</td><td><span class="ref">142,094</span></td><td><span class="enc">142,091</span></td><td>0,0019</td><td>4</td><td>4</td><td>22,34</td><td>0,71</td><td></td></tr><tr class=""><td>104_6</td><td><span class="ref">153,077</span></td><td><span class="enc">153,077</span></td><td>0,0005</td><td>5</td><td>5</td><td>22,36</td><td>0,70</td><td></td></tr><tr class=""><td>101_3</td><td><span class="ref">166,352</span></td><td><span class="enc">166,341</span></td><td>0,0065</td><td>6</td><td>6</td><td>22,41</td><td>0,72</td><td></td></tr><tr class=""><td>101_6</td><td><span class="ref">205,735</span></td><td><span class="enc">205,764</span></td><td>0,0143</td><td>7</td><td>7</td><td>22,53</td><td>0,71</td><td></td></tr><tr class=""><td>110_8</td><td><span class="ref">216,089</span></td><td><span class="enc">216,096</span></td><td>0,0030</td><td>8</td><td>8</td><td>22,37</td><td>0,71</td><td></td></tr><tr class=""><td>109_2</td><td><span class="ref">218,447</span></td><td><span class="enc">218,457</span></td><td>0,0045</td><td>9</td><td>9</td><td>22,36</td><td>0,71</td><td></td></tr><tr class=""><td>109_5</td><td><span class="ref">269,500</span></td><td><span class="enc">269,520</span></td><td>0,0073</td><td>10</td><td>10</td><td>22,34</td><td>0,71</td><td></td></tr><tr class=""><td>108_4</td><td><span class="ref">274,134</span></td><td><span class="enc">274,146</span></td><td>0,0046</td><td>11</td><td>11</td><td>22,42</td><td>0,71</td><td></td></tr><tr class=""><td>105_3</td><td><span class="ref">289,055</span></td><td><span class="enc">289,033</span></td><td>0,0078</td><td>12</td><td>12</td><td>22,39</td><td>0,71</td><td></td></tr><tr class="rest"><td>còn 67 bản ghi</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td></td></tr>
+  </table>
+
+  <div class="exp e-ok">
+    <b>Cách đọc.</b> <b>Khoảng cách</b> là mức khác biệt giữa hai mẫu vân tay: càng nhỏ thì
+    hai mẫu càng giống nhau, nên bản ghi có khoảng cách nhỏ nhất chính là kết quả nhận dạng.
+    <b>Hạng</b> là thứ tự sau khi sắp xếp theo khoảng cách.
+    <br><br>
+    Trong lượt đo này, hai cột hạng trùng nhau ở toàn bộ 79 bản ghi — <b>0 bản ghi
+    bị đổi thứ hạng</b>. Kết quả nhận dạng là <b>101_2</b>, giống hệt kết quả khi tính trên
+    dữ liệu gốc, và đúng ngón của truy vấn.
+    Tổng thời gian quét 79 bản ghi: 1.839 ms.
+  </div>
+</section>
+
+<section class="s-enc">
+  <h2><span class="n">02</span> Thời gian xử lý một truy vấn</h2>
+  <p class="lead">Đo liền mạch trong một tiến trình, từ lúc thiết bị nhận vector đặc trưng cho
+  tới khi nơi giữ khoá đọc được kết quả. Trung bình qua 30 lần lặp.</p>
+
+  <div class="cards">
+    <div class="card t-enc">
+      <div class="val">3,15<span class="unit">ms</span></div>
+      <div class="lab">Thiết bị mã hoá</div>
+      <div class="note">Chạy trên thiết bị người dùng, trước khi gửi đi</div>
+    </div>
+    <div class="card t-enc">
+      <div class="val">0,13<span class="unit">ms</span></div>
+      <div class="lab">Truyền và nạp</div>
+      <div class="note">Đưa dữ liệu mã hoá vào bộ nhớ máy chủ</div>
+    </div>
+    <div class="card t-enc">
+      <div class="val">22,51<span class="unit">ms</span></div>
+      <div class="lab">Máy chủ tính toán</div>
+      <div class="note">Toàn bộ trên bản mã, không giải mã</div>
+    </div>
+    <div class="card t-enc">
+      <div class="val">0,72<span class="unit">ms</span></div>
+      <div class="lab">Giải mã kết quả</div>
+      <div class="note">Chỉ nơi giữ khoá bí mật làm được bước này</div>
+    </div>
+    <div class="card t-enc">
+      <div class="val">26,51<span class="unit">ms</span></div>
+      <div class="lab">Tổng một truy vấn</div>
+      <div class="note">Tương đương — truy vấn mỗi giây</div>
+    </div>
+  </div>
+
+  <div class="exp">
+    <b>Vì sao máy chủ chiếm 85% thời gian.</b>
+    Phép tính khoảng cách trên dữ liệu mã hoá phải cộng dồn 512 chiều bằng các phép xoay vector —
+    riêng bước này chiếm 79% thời gian máy chủ. Đây là điểm tối ưu rõ ràng nhất nếu
+    cần tăng tốc, và không ảnh hưởng tới độ chính xác.
+  </div>
+</section>
+
+<section class="s-ok">
+  <h2><span class="n">03</span> Mã hoá có làm sai kết quả không</h2>
+  <p class="lead">Kiểm chứng trên bộ dữ liệu chuẩn quốc tế FVC2002 DB1_B: 80 ảnh vân tay thật
+  (10 ngón × 8 lần quét), so khớp toàn bộ 3.160 cặp. Với mỗi cặp, so kết quả tính trên
+  bản mã với kết quả tính trên dữ liệu gốc.</p>
+
+  <div class="cards">
+    <div class="card t-ok">
+      <div class="val">0,0096<span class="unit">%</span></div>
+      <div class="lab">Sai lệch trung bình</div>
+      <div class="note">Lớn nhất 0,2062%, độ lệch chuẩn 0,0091%</div>
+    </div>
+    <div class="card t-ok">
+      <div class="val">100<span class="unit">%</span></div>
+      <div class="lab">Truy vấn giữ nguyên kết quả</div>
+      <div class="note">0 trên 80 truy vấn cho kết quả khác bản gốc</div>
+    </div>
+    <div class="card t-ok">
+      <div class="val">99,71<span class="unit">%</span></div>
+      <div class="lab">Giữ đúng thứ tự xếp hạng</div>
+      <div class="note">Tính trên 6.240 cặp bản ghi liền kề</div>
+    </div>
+  </div>
+
+  <div class="exp e-ok">
+    <b>Ý nghĩa.</b> CKKS là lược đồ mã hoá xấp xỉ: kết quả lệch đi một lượng rất nhỏ so với tính
+    trực tiếp. Câu hỏi không phải "lệch bao nhiêu" mà <b>lệch đó có đủ làm đổi quyết định không</b>.
+    Trên cả 80 truy vấn, kết quả nhận dạng trùng khớp hoàn toàn với khi tính trên dữ liệu gốc.
+    <br><br>
+    0,29% cặp bị đảo thứ tự đều là những bản ghi cách nhau dưới 0,035 — nhỏ hơn chính sai số mã hoá
+    (0,031). Nghĩa là chỉ đảo khi hai bản ghi gần nhau tới mức không phân biệt được, nên không có
+    quyết định nào thay đổi.
+  </div>
+
+  <div class="exp e-warn">
+    <b>Phạm vi áp dụng.</b> Đây là chỉ số của <b>lớp mã hoá</b>, không phải độ chính xác nhận dạng.
+    Trên bộ trích đặc trưng dùng để kiểm thử, tỉ lệ nhận đúng ngón ở hạng 1 là 70% (56/80) — con số
+    này do bộ trích quyết định, không phải do mã hoá, và giống hệt nhau ở cả hai cách tính.
+    Trong triển khai thực tế, bộ trích đặc trưng là phần sẵn có của khách hàng; kết quả trên chứng
+    minh lớp mã hoá không làm suy giảm bộ trích đó, dù là bộ nào.
+  </div>
+</section>
+
+<section class="s-cost">
+  <h2><span class="n">04</span> Chi phí tài nguyên</h2>
+  <p class="lead">Mã hoá đồng cấu có giá của nó, trả bằng dung lượng và thời gian xử lý. Bảng dưới
+  nêu đầy đủ phần tăng thêm so với hệ thống so khớp thông thường.</p>
+
+  <table>
+    <colgroup><col style="width:34%"><col style="width:22%"><col style="width:22%"><col style="width:22%"></colgroup>
+    <tr><th>Hạng mục</th><th>Hệ thống thông thường</th><th>Hệ thống mã hoá</th><th>Hệ số</th></tr>
+    <tr class=""><td>Dữ liệu mỗi bản ghi</td><td><span class="ref">0,50 KB</span></td><td><span class="enc">96,00 KB</span></td><td><span class="cost">192 ×</span></td></tr>
+    <tr class=""><td>Xác thực 1:1 — một phép so khớp</td><td><span class="ref">0,0004 ms</span></td><td><span class="enc">26,51 ms</span></td><td><span class="cost">51.866 ×</span></td></tr>
+    <tr class=""><td>Khoá đánh giá, truyền một lần</td><td><span class="ref">—</span></td><td><span class="enc">7,53 MB</span></td><td>—</td></tr>
+  </table>
+
+  <table>
+    <colgroup>
+      <col style="width:28%"><col style="width:24%"><col style="width:24%"><col style="width:24%">
+    </colgroup>
+    <tr>
+      <th>Quy mô cơ sở dữ liệu</th><th>Lưu trữ thường</th><th>Lưu trữ mã hoá</th>
+      <th>Thời gian nhận dạng 1:N</th>
+    </tr>
+    <tr class=""><td>1.000 người</td><td><span class="ref">0 MB</span></td><td><span class="enc">94 MB</span></td><td><span class="cost">23,2 s</span></td></tr><tr class=""><td>10.000 người</td><td><span class="ref">5 MB</span></td><td><span class="enc">938 MB</span></td><td><span class="cost">3,9 phút</span></td></tr><tr class=""><td>100.000 người</td><td><span class="ref">49 MB</span></td><td><span class="enc">9,16 GB</span></td><td><span class="cost">38,7 phút</span></td></tr>
+  </table>
+
+  <div class="exp e-cost">
+    <b>Hai chế độ vận hành, hai mức chi phí.</b>
+    <b>Xác thực 1:1</b> — người dùng đưa mã định danh kèm vân tay, hệ thống chỉ so đúng một cặp,
+    tốn 26,51 ms bất kể cơ sở dữ liệu lớn tới đâu. Đây là chế độ của hệ chấm công và kiểm soát
+    ra vào. <b>Nhận dạng 1:N</b> — chỉ đưa vân tay, hệ thống quét toàn bộ cơ sở dữ liệu nên thời
+    gian tỉ lệ thuận với số bản ghi; cột cuối bảng trên là thời gian cho chế độ này.
+    <br><br>
+    Phép so khớp độc lập nhau nên chia được cho nhiều luồng hoặc nhiều máy; số đo ở đây là bản chạy
+    tuần tự một luồng, chưa tối ưu.
+    <br><br>
+    <b>Đổi lại khoản chi phí này:</b> máy chủ không đọc được dữ liệu sinh trắc ở bất kỳ thời điểm
+    nào — kể cả khi bị xâm nhập hoàn toàn, kể cả bởi người có toàn quyền quản trị. Rủi ro không nằm
+    ở chỗ bảo vệ máy chủ tốt đến đâu, mà ở chỗ máy chủ không hề giữ dữ liệu có thể đọc được.
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">05</span> Tái tạo số liệu</h2>
+  <div class="exp">
+    <code>bash seal_flow/setup.sh</code> — dựng môi trường, biên dịch thư viện<br>
+    <code>cd device &amp;&amp; ../seal_flow/build/15_bench_pipeline 30</code> — thời gian từng chặng, mục 02<br>
+    <code>cd device &amp;&amp; ../seal_flow/build/16_match_report 101_1 79</code> — bảng ở mục 01<br>
+    <code>./seal_flow/build/14_fidelity</code> — kiểm chứng trên 3.160 cặp, mục 03<br>
+    <code>python3 seal_flow/tools/make_summary.py</code> — gộp thành bảng thống kê<br>
+    <code>python3 seal_flow/tools/make_dashboard.py</code> — dựng lại trang này<br><br>
+    Số liệu thô: <code>seal_flow/bench/*.csv</code>
+  </div>
+</section>
+
+<footer>
+  Hệ thống bảo mật dữ liệu vân tay · Ngô Hoàng Nhật Khang, Hồ Anh Tuấn ·
+  Computer Science Engineering, VNUK · Trang này sinh tự động từ
+  <code>seal_flow/tools/make_dashboard.py</code> ngày 18/10/2026
+</footer>

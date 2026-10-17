@@ -1,0 +1,11 @@
+chang,trung_binh_ms,do_lech_chuan_ms,min_ms,max_ms
+thiet_bi_ma_hoa,3.14533,0.060291,3.042,3.44519
+nap_ban_ma,0.130472,0.00682674,0.121204,0.158538
+server_tinh_toan,22.5144,0.221238,22.4014,23.4232
+giai_ma,0.719435,0.0179031,0.710707,0.788134
+tong_pipeline,26.5097,0.260067,26.3666,27.4756
+
+#,gia_tri,don_vi
+thiet_lap_thiet_bi,0.104908,ms
+kich_thuoc_ciphertext,96,KB
+thong_luong_1_nhan,37.7221,truy_van/giay

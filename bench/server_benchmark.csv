@@ -1,0 +1,17 @@
+hang_muc,trung_binh_ms,do_lech_chuan_ms,min_ms,max_ms
+relin_key_gen,5.71754,0.51374,5.31425,6.29594
+galois_key_gen,50.2149,1.95493,48.1225,51.9948
+sub,0.129412,0.0231327,0.111167,0.21715
+square,0.552102,0.0300601,0.537225,0.6863
+relinearize,3.18612,0.0370031,3.16392,3.31445
+rescale,0.832305,0.026514,0.823227,0.971784
+rotation_sum,17.8816,0.506853,17.7121,20.4816
+tong_mot_phep_khop,22.5815,0.519129,22.3619,25.1554
+giai_ma,0.721526,0.0129593,0.713078,0.770264
+ban_ro_doi_chung,0.000435381,2.25316e-07,0.000435211,0.000435882
+
+#,gia_tri,don_vi
+kich_thuoc_ciphertext,96,KB
+kich_thuoc_relin_key,0.750384,MB
+kich_thuoc_galois_key,6.78421,MB
+thong_luong_1_nhan,44.284,khop/giay
