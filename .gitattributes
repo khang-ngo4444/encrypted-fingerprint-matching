@@ -1,0 +1,5 @@
+# Thư mục kết quả đo: số liệu và trang báo cáo sinh tự động, không phải mã nguồn.
+# Đánh dấu để thống kê ngôn ngữ của repo phản ánh đúng phần mã thực sự viết tay.
+bench/** linguist-generated=true
+data/**  linguist-generated=true
+doc/**   linguist-documentation=true
