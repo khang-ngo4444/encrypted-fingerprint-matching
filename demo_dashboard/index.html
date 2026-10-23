@@ -46,7 +46,43 @@
   <main class="app-main">
     <!-- TAB 1: LIVE PIPELINE & AUTOMATION DEMO -->
     <section id="tab-live-pipeline" class="tab-pane active">
-      <!-- Automation Control Bar -->
+      <!-- HOT-FOLDER WATCHER STATUS & GATEWAY BAR -->
+      <div class="hotfolder-gateway-bar">
+        <div class="hotfolder-status-indicator">
+          <span class="pulsing-radar"></span>
+          <div class="status-texts">
+            <div class="status-title">HOT-FOLDER WATCHER: ĐANG LẮNG NGHE FILE VÂN TAY</div>
+            <div class="status-subtitle">
+              Chỉ cần paste file <code>.bmp</code>, <code>.bin</code> hoặc ảnh vân tay vào folder — hệ thống tự động kích hoạt toàn bộ luồng so khớp!
+            </div>
+          </div>
+        </div>
+
+        <div class="hotfolder-actions">
+          <div class="folder-path-box" id="box-folder-path" title="Click để sao chép đường dẫn thư mục">
+            <span class="path-label">Thư mục nhận:</span>
+            <span class="path-text" id="display-check-path">check_folder/</span>
+            <button class="btn-copy-path" id="btn-copy-path" title="Sao chép">📋</button>
+          </div>
+          <button id="btn-open-check-folder" class="btn-action-outline" title="Mở thư mục check_folder trên máy tính">
+            Mở Folder Check
+          </button>
+          <button id="btn-open-sample-folder" class="btn-action-outline highlight" title="Mở thư mục chứa các mẫu vân tay có sẵn để copy paste">
+            Mở Kho Mẫu Paste
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Ingestion Alert Banner (shows when file arrives) -->
+      <div id="live-ingestion-banner" class="ingestion-banner hidden">
+        <div class="banner-content">
+          <span class="banner-badge">HOT-FOLDER DETECTED</span>
+          <span class="banner-msg" id="banner-msg">Tiếp nhận mẫu vân tay mới từ check_folder/</span>
+          <span class="banner-file" id="banner-file">101_1.bmp</span>
+        </div>
+      </div>
+
+      <!-- Automation & Manual Control Bar -->
       <div class="pipeline-controller">
         <div class="controller-group">
           <label class="control-label">Mẫu vân tay truy vấn:</label>
@@ -100,9 +136,9 @@
         </div>
 
         <div class="pipeline-stages">
-          <!-- Stage 1: AS608 Optical Sensor -->
-          <div class="stage-node" id="node-sensor">
-            <div class="node-badge">NODE 1: SENSOR</div>
+          <!-- Stage 1: AS608 Optical Sensor & Drop Zone -->
+          <div class="stage-node drop-zone" id="node-sensor" title="Kéo thả file vân tay vào đây hoặc paste trực tiếp (Ctrl+V)">
+            <div class="node-badge">NODE 1: SENSOR (GATEWAY)</div>
             <div class="scanner-box">
               <div class="fingerprint-scan-area">
                 <svg class="fingerprint-svg" viewBox="0 0 100 120">
@@ -114,8 +150,8 @@
                 <div class="laser-beam"></div>
               </div>
             </div>
-            <div class="node-name">Cảm Biến Quang AS608</div>
-            <div class="node-spec">500 DPI | 256×256 px</div>
+            <div class="node-name">Cảm Biến AS608</div>
+            <div class="node-spec">Kéo thả / Paste file tại đây</div>
             <div class="node-time"><span id="time-sensor">0.10 ms</span></div>
           </div>
 
@@ -251,19 +287,45 @@
 
         <!-- Column 2: Live Hardware Telemetry & Security Assurance -->
         <div class="card panel-card">
-          <div class="card-header">
-            <h3>NHẬT KÝ THỰC THI (TELEMETRY)</h3>
-            <span class="terminal-badge">LIVE LOGS</span>
+          <div class="card-header telemetry-header">
+            <div class="header-title-group">
+              <h3>NHẬT KÝ THỰC THI (TELEMETRY LOGS)</h3>
+              <span class="terminal-badge"><span class="live-dot"></span> LIVE AUDIT STREAM</span>
+            </div>
+            <div class="log-controls">
+              <button id="btn-toggle-autoscroll" class="btn-tiny active" title="Bật/Tắt tự động cuộn">Tự Cuộn: BẬT</button>
+              <button id="btn-clear-logs" class="btn-tiny" title="Xóa màn hình log">Xóa</button>
+              <button id="btn-export-logs" class="btn-tiny" title="Tải nhật ký (.txt)">Xuất Log</button>
+            </div>
+          </div>
+
+          <!-- Log Subsystem Filter Bar -->
+          <div class="log-filter-bar">
+            <button class="filter-chip active" data-filter="all">Tất Cả</button>
+            <button class="filter-chip" data-filter="HOT_FOLDER">Hot-Folder</button>
+            <button class="filter-chip" data-filter="AS608">Cảm Biến</button>
+            <button class="filter-chip" data-filter="ESP32_SEAL">Mã Hoá</button>
+            <button class="filter-chip" data-filter="RPi5_SERVER">Server FHE</button>
+            <button class="filter-chip" data-filter="KEY_HOLDER">Giải Mã</button>
+            <button class="filter-chip" data-filter="AUDIT">Pháp Lý</button>
           </div>
 
           <div class="terminal-window" id="terminal-console">
-            <div class="term-line info">[0.00 ms] Hệ thống BioCipher FHE sẵn sàng. Nạp bộ tham số CKKS Degree 4096.</div>
-            <div class="term-line success">[0.10 ms] Cảm biến AS608 tiếp nhận vân tay. Khử lệch tâm và chuẩn hóa tương phản.</div>
-            <div class="term-line info">[1.35 ms] Trích xuất FingerCode 512 chiều (Gabor 8 hướng x 8x8 lưới). Scale K=32.0.</div>
-            <div class="term-line enc">[4.50 ms] ESP32 SEAL-Embedded mã hoá thành công. Kích thước Ciphertext: 96 KB.</div>
-            <div class="term-line net">[4.63 ms] Kênh mạng truyền nạp bản mã vào Raspberry Pi 5.</div>
-            <div class="term-line srv">[27.14 ms] Server tính khoảng cách d^2 + 9 vòng xoay vector trên bản mã. KHÔNG GIẢI MÃ.</div>
-            <div class="term-line dec">[27.86 ms] Trạm giữ khoá giải mã khoảng cách. Quyết định nhận dạng: XÁC THỰC THÀNH CÔNG.</div>
+            <!-- Dynamically populated from backend live-status API -->
+          </div>
+
+          <!-- Live Security & System Audit Grid -->
+          <div class="live-system-matrix">
+            <div class="sys-metric-card">
+              <span class="sys-metric-lab">VÂN TAY BẢN RÕ TRÊN RAM SERVER</span>
+              <span class="sys-metric-val safe">0 Bytes <span class="tag-safe">ZERO-PLAINTEXT</span></span>
+              <span class="sys-metric-sub">Kể cả khi hacker chiếm quyền root server cũng không lấy được vân tay</span>
+            </div>
+            <div class="sys-metric-card">
+              <span class="sys-metric-lab">DUNG LƯỢNG CIPHERTEXT FHE</span>
+              <span class="sys-metric-val text-enc">98.304 Bytes <span class="tag-enc">96 KB</span></span>
+              <span class="sys-metric-sub">Mã hoá đa thức bậc 4096, chuẩn 128-bit Post-Quantum Lattice</span>
+            </div>
           </div>
 
           <!-- Security Matrix Box -->
@@ -271,13 +333,13 @@
             <div class="sec-item">
               <div class="sec-content">
                 <span class="sec-title">RAM Server Không Chứa Sinh Trắc</span>
-                <span class="sec-desc">Kể cả khi hacker chiếm quyền máy chủ hoặc quản trị viên sao chép bộ nhớ, dữ liệu vân tay nguyên bản không bao giờ tồn tại.</span>
+                <span class="sec-desc">Mọi phép tính Euclidean đều thực hiện trực tiếp trên bản mã đồng cấu. Bản rõ không bao giờ tồn tại trong bộ nhớ.</span>
               </div>
             </div>
             <div class="sec-item">
               <div class="sec-content">
-                <span class="sec-title">Chuẩn An Toàn Mật Mã 128-bit</span>
-                <span class="sec-desc">Đạt Homomorphic Encryption Security Standard (Lattice-based cryptography, kháng máy tính lượng tử).</span>
+                <span class="sec-title">Tuân Thủ Tuyệt Đối Luật 91/2025/QH15</span>
+                <span class="sec-desc">Bảo vệ dữ liệu cá nhân nhạy cảm, loại trừ triệt để nguy cơ vi phạm và mức phạt tới 5% doanh thu.</span>
               </div>
             </div>
           </div>
@@ -422,12 +484,11 @@
       <!-- Startup Banner -->
       <div class="startup-banner">
         <div class="banner-badge">DỰ ÁN KHỞI NGHIỆP SINH VIÊN · VNUK INNOVATION CHALLENGE 2026</div>
-        <h2>BioCipher — Hệ Thống Xác Thực Sinh Trắc Học Bảo Mật Bằng FHE</h2>
+        <h2>Mô Hình Kinh Doanh (Business Model Canvas)</h2>
         <p class="banner-slogan">"Quyền riêng tư không nên là cái giá của sự tiện lợi."</p>
         <div class="banner-meta">
-          <span>Sáng lập: <b>Ngô Hoàng Nhật Khang & Hồ Anh Tuấn</b></span>
-          <span>Đơn vị: <b>Viện Nghiên cứu & Đào tạo Việt - Anh (VNUK)</b></span>
-          <span>Pháp lý: <b>Luật Bảo vệ Dữ liệu Cá nhân 91/2025/QH15</b></span>
+          <span>Tác giả: <b>Ngô Hoàng Nhật Khang, Hồ Anh Tuấn</b></span>
+          <span>Đơn vị: <b>Computer Science Engineering, VNUK</b></span>
         </div>
       </div>
 
@@ -435,148 +496,89 @@
       <div class="bmc-grid-container">
         <!-- 1. Key Partners -->
         <div class="bmc-block bmc-partners">
-          <div class="bmc-title">ĐỐI TÁC CHÍNH (Key Partners)</div>
+          <div class="bmc-title">ĐỐI TÁC CHÍNH</div>
           <ul class="bmc-list">
-            <li><b>Viện VNUK:</b> Bảo trợ học thuật, phòng lab R&D và ươm tạo khởi nghiệp.</li>
-            <li><b>Nhà sản xuất thiết bị:</b> Ronald Jack, ZKTeco, Suprema tích hợp firmware.</li>
-            <li><b>Các đối tác SI:</b> Nhà thầu tích hợp giải pháp chấm công và an ninh tòa nhà.</li>
-            <li><b>Cơ quan quản lý:</b> Cục An toàn thông tin, VNISA chứng nhận tuân thủ.</li>
+            <li>Đơn vị tích hợp hệ thống</li>
+            <li>Hãng sản xuất cảm biến</li>
+            <li>Đơn vị kiểm định bảo mật</li>
           </ul>
         </div>
 
         <!-- 2. Key Activities -->
         <div class="bmc-block bmc-activities">
-          <div class="bmc-title">HOẠT ĐỘNG CHÍNH (Key Activities)</div>
+          <div class="bmc-title">HOẠT ĐỘNG CHÍNH</div>
           <ul class="bmc-list">
-            <li><b>Tối ưu thuật toán FHE:</b> Nâng cao hiệu năng CKKS trên chip nhúng chi phí thấp.</li>
-            <li><b>Đóng gói SDK:</b> Cung cấp SDK C/C++, Python và API Microservices plug-and-play.</li>
-            <li><b>Kiểm định an toàn:</b> Đạt chuẩn FIPS 140-3 và ISO/IEC 27001.</li>
-            <li><b>Hỗ trợ kỹ thuật:</b> Tích hợp vào hệ thống máy chấm công hiện hữu của doanh nghiệp.</li>
+            <li>Tăng tốc so khớp</li>
+            <li>Kiểm chứng độ chính xác</li>
+            <li>Hỗ trợ lắp đặt</li>
           </ul>
         </div>
 
         <!-- 3. Value Propositions -->
         <div class="bmc-block bmc-value highlight-value">
-          <div class="bmc-title">ĐỀ XUẤT GIÁ TRỊ (Value Propositions)</div>
+          <div class="bmc-title">GIÁ TRỊ MANG LẠI CHO THỊ TRƯỜNG</div>
           <ul class="bmc-list">
-            <li><b>Zero Plaintext:</b> Dữ liệu vân tay không bao giờ nằm ở dạng đọc được trên máy chủ.</li>
-            <li><b>Tuân thủ Luật 91/2025:</b> Miễn trừ rủi ro xử phạt rò rỉ dữ liệu nhạy cảm từ 01/01/2026.</li>
-            <li><b>Không đổi hạ tầng:</b> Giữ nguyên cảm biến, giữ nguyên CSDL, chỉ đổi khâu so khớp.</li>
-            <li><b>Thời gian thực:</b> Chỉ 26.51 ms/truy vấn, không gây trễ cho người dùng.</li>
+            <li>Máy chủ không đọc được vân tay, kể cả khi bị chiếm</li>
+            <li>Giữ nguyên độ chính xác</li>
+            <li>Không phải thay cảm biến hay phần mềm đang dùng</li>
+            <li>Rút rủi ro pháp lý khỏi kho dữ liệu vân tay</li>
           </ul>
         </div>
 
         <!-- 4. Customer Relationships -->
         <div class="bmc-block bmc-relationships">
-          <div class="bmc-title">QUAN HỆ KHÁCH HÀNG (Customer Relationships)</div>
+          <div class="bmc-title">QUAN HỆ KHÁCH HÀNG</div>
           <ul class="bmc-list">
-            <li><b>Hỗ trợ kỹ thuật chuyên sâu:</b> Đội ngũ kỹ sư hỗ trợ trực tiếp 24/7.</li>
-            <li><b>Cam kết SLA 99.9%:</b> Đảm bảo độ sẵn sàng của dịch vụ xác thực.</li>
-            <li><b>Cổng Sandbox tự thử:</b> Cho phép khách hàng tự đo kiểm độ trễ trước khi mua.</li>
+            <li>Thử nghiệm có hướng dẫn</li>
+            <li>Cam kết hỗ trợ kỹ thuật</li>
+            <li>Số liệu tự kiểm chứng được</li>
           </ul>
         </div>
 
         <!-- 5. Customer Segments -->
         <div class="bmc-block bmc-segments highlight-segment">
-          <div class="bmc-title">PHÂN KHÚC KHÁCH HÀNG (Customer Segments)</div>
+          <div class="bmc-title">PHÂN KHÚC KHÁCH HÀNG</div>
           <ul class="bmc-list">
-            <li><b>Doanh nghiệp SME & Tập đoàn:</b> Dùng máy chấm công vân tay chịu áp lực pháp lý.</li>
-            <li><b>Ngân hàng số & Fintech:</b> Xác thực eKYC và giao dịch sinh trắc học giá trị cao.</li>
-            <li><b>Nhà sản xuất khóa & IoT:</b> Cần chứng chỉ bảo mật quốc tế để xuất khẩu.</li>
+            <li>Chấm công, kiểm soát ra vào, đang giữ dữ liệu, chịu áp lực tuân thủ sớm nhất</li>
+            <li>Ngân hàng, ví điện tử, xác thực khách mà không tạo thêm kho vân tay</li>
+            <li>Hãng sản xuất thiết bị, bán kèm điểm khác biệt</li>
           </ul>
         </div>
 
         <!-- 6. Key Resources -->
         <div class="bmc-block bmc-resources">
-          <div class="bmc-title">NGUỒN LỰC CHÍNH (Key Resources)</div>
+          <div class="bmc-title">NGUỒN LỰC CHÍNH</div>
           <ul class="bmc-list">
-            <li><b>Bản quyền & Công nghệ lõi:</b> Bản vá và giải thuật tối ưu CKKS độc quyền.</li>
-            <li><b>Đội ngũ kỹ sư sáng lập:</b> Năng lực chuyên sâu về mật mã và hệ thống nhúng.</li>
-            <li><b>Dữ liệu thực nghiệm FVC2002:</b> 3.160 cặp đo đạc chứng minh tính trung thực.</li>
+            <li>Mã nguồn đã chạy được</li>
+            <li>Số liệu đo công khai</li>
+            <li>Đội ngũ kỹ thuật</li>
           </ul>
         </div>
 
         <!-- 7. Channels -->
         <div class="bmc-block bmc-channels">
-          <div class="bmc-title">KÊNH PHÂN PHỐI (Channels)</div>
+          <div class="bmc-title">KÊNH</div>
           <ul class="bmc-list">
-            <li><b>Bán trực tiếp B2B:</b> Tiếp cận các khu công nghiệp, tòa nhà văn phòng.</li>
-            <li><b>Mạng lưới đại lý phân phối thiết bị máy chấm công.</b></li>
-            <li><b>Cổng kỹ thuật số (Developer Portal & SDK Hub).</b></li>
+            <li>Bán trực tiếp</li>
+            <li>Qua đơn vị tích hợp</li>
+            <li>Kho mã nguồn công khai</li>
           </ul>
         </div>
 
         <!-- 8. Cost Structure -->
         <div class="bmc-block bmc-costs">
-          <div class="bmc-title">CƠ CẤU CHI PHÍ (Cost Structure)</div>
-          <ul class="bmc-list">
-            <li><b>R&D & Đội ngũ kỹ thuật:</b> 40%</li>
-            <li><b>Kiểm định & Chứng nhận bảo mật:</b> 20%</li>
-            <li><b>Hạ tầng đo kiểm Cloud & Server:</b> 15%</li>
-            <li><b>Bán hàng B2B & Marketing hội thảo:</b> 25%</li>
-          </ul>
+          <div class="bmc-title">CƠ CẤU CHI PHÍ</div>
+          <div class="bmc-text-content">
+            Nghiên cứu phát triển, Hạ tầng kiểm thử, Kiểm định, Hỗ trợ khách hàng
+          </div>
         </div>
 
         <!-- 9. Revenue Streams -->
         <div class="bmc-block bmc-revenue highlight-revenue">
-          <div class="bmc-title">DÒNG DOANH THU (Revenue Streams)</div>
-          <ul class="bmc-list">
-            <li><b>Phí thường niên theo nhân sự:</b> 45.000 VNĐ / nhân viên / năm.</li>
-            <li><b>Phí tích hợp ban đầu:</b> 15 – 35 triệu VNĐ / hệ thống.</li>
-            <li><b>Bản quyền OEM phần cứng:</b> 2,50 USD / thiết bị xuất xưởng.</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Financial Projections Table (3-Year Forecast) -->
-      <div class="card panel-card margin-top">
-        <div class="card-header">
-          <h3>DỰ BÁO TÀI CHÍNH 3 NĂM ĐẦU (2026 - 2028)</h3>
-          <span class="badge-growth">TĂNG TRƯỞNG BỀN VỮNG</span>
-        </div>
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Năm</th>
-                <th>Quy Mô Khách Hàng Dự Kiến</th>
-                <th>Doanh Thu (VNĐ)</th>
-                <th>Chi Phí (VNĐ)</th>
-                <th>Lợi Nhuận (VNĐ)</th>
-                <th>Biên Lợi Nhuận</th>
-                <th>Mục Tiêu Trọng Tâm</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><b>Năm 1 (2026)</b></td>
-                <td>40 Doanh nghiệp (~15.000 nhân viên) + 1 OEM pilot</td>
-                <td class="text-enc"><b>950.000.000</b></td>
-                <td>820.000.000</td>
-                <td class="text-ok"><b>130.000.000</b></td>
-                <td>13,7%</td>
-                <td>Hòa vốn cuối năm, hoàn thiện SDK v1.0 khi Luật 91 có hiệu lực</td>
-              </tr>
-              <tr>
-                <td><b>Năm 2 (2027)</b></td>
-                <td>180 Doanh nghiệp + 2 Ngân hàng/Fintech + 3 OEM</td>
-                <td class="text-enc"><b>3.450.000.000</b></td>
-                <td>2.150.000.000</td>
-                <td class="text-ok"><b>1.300.000.000</b></td>
-                <td>37,6%</td>
-                <td>Mở rộng Đà Nẵng & TP.HCM, thương mại hoá bản quyền OEM</td>
-              </tr>
-              <tr>
-                <td><b>Năm 3 (2028)</b></td>
-                <td>520 Doanh nghiệp + 6 Ngân hàng + 8 OEM thiết bị</td>
-                <td class="text-enc"><b>9.200.000.000</b></td>
-                <td>5.100.000.000</td>
-                <td class="text-ok"><b>4.100.000.000</b></td>
-                <td>44,5%</td>
-                <td>Dẫn đầu thị trường sinh trắc FHE tại VN, mở rộng Face ID FHE</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="bmc-title">DÒNG DOANH THU</div>
+          <div class="bmc-text-content">
+            Phí theo thiết bị, Phí triển khai, Gói hỗ trợ thường niên
+          </div>
         </div>
       </div>
     </section>
