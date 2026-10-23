@@ -134,11 +134,15 @@ def load_benchmarks():
 
 load_benchmarks()
 
-# 3. Danh sach cac mau van tay FVC2002 (10 ngon x 8 lan quet = 80 ban ghi)
+# 3. Danh sach mau van tay cua bo dang dung (10 ngon x 8 lan quet = 80 ban ghi).
+# data/ chua nhieu bo, nen loc theo tien to de mot lan chay chi dung mot bo.
+DATASET_PREFIX = os.environ.get("BIOCIPHER_DATASET", "04d3-")
+
 def get_sample_list():
     samples = []
     if os.path.exists(DATA_DIR):
-        files = sorted(f for f in os.listdir(DATA_DIR) if f.endswith(".bin"))
+        files = sorted(f for f in os.listdir(DATA_DIR)
+                       if f.endswith(".bin") and f.startswith(DATASET_PREFIX))
         for f in files:
             name = f.replace(".bin", "")
             parts = name.split("_")
@@ -168,14 +172,15 @@ def run_matching_flow(query_name, threshold=150.0):
     samples = get_sample_list()
     query_vec = load_vector(query_name)
     if not query_vec:
-        # Fallback to 101_1 if vector not found
-        query_name = "101_1"
+        # Khong thay vector thi lay mau dau tien cua bo dang dung
+        fallback = get_sample_list()
+        query_name = fallback[0]["id"] if fallback else query_name
         query_vec = load_vector(query_name)
 
     query_finger = query_name.split("_")[0]
     results = []
 
-    # So khop voi 79 ban ghi con lai
+    # So khop voi cac ban ghi con lai
     for s in samples:
         target_name = s["id"]
         if target_name == query_name:
@@ -320,7 +325,7 @@ def extract_query_id_from_file(file_name, file_path):
         except Exception:
             pass
 
-    # Pattern 4: Hash SHA256 noi dung file de map co dinh vao 1 trong 80 mau FVC2002
+    # Pattern 4: Hash SHA256 noi dung file de map co dinh vao 1 trong 80 mau cua bo
     try:
         if os.path.exists(file_path):
             with open(file_path, "rb") as f:
@@ -351,7 +356,7 @@ def handle_new_fingerprint_file(file_path):
     add_log("NETWORK", f"Bản mã 96 KB truyền qua kênh TLS an toàn tới Raspberry Pi 5. Không rò rỉ dữ liệu sinh trắc! (0.13 ms).", "net")
 
     # Server FHE Matching
-    add_log("RPi5_SERVER", f"So khớp đồng cấu d^2 + 9 vòng xoay Galois vector trên 79 bản ghi CSDL FVC2002. KHÔNG GIẢI MÃ (22.51 ms)!", "srv")
+    add_log("RPi5_SERVER", f"So khớp đồng cấu d^2 + 9 vòng xoay Galois vector trên 79 bản ghi CSDL FVC2004 DB3_B. KHÔNG GIẢI MÃ (22.51 ms)!", "srv")
 
     # Run matching
     match_result = run_matching_flow(query_id, threshold=150.0)

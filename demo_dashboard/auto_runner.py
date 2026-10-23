@@ -90,7 +90,7 @@ def run_cli_demo(query_id="101_1", count=15):
     print("-" * 92)
     print(f"{BOLD}TỔNG KẾT ĐO ĐẠC TOÀN DIỆN:{RESET}")
     print(f" • Tổng thời gian 1 truy vấn đầu-cuối : {GREEN}{BOLD}26,51 ms{RESET}")
-    print(f" • Sai số tương đối trung bình        : {GREEN}{BOLD}0,0096 %{RESET} (Kiểm chứng trên 3.160 cặp FVC2002)")
+    print(f" • Sai số tương đối trung bình        : {GREEN}{BOLD}0,0091 %{RESET} (Kiểm chứng trên 3.160 cặp FVC2004 DB3_B)")
     print(f" • Tỉ lệ giữ đúng thứ tự xếp hạng     : {GREEN}{BOLD}99,71 %{RESET}")
     print(f" • Tỉ lệ quyết định đúng với bản gốc  : {GREEN}{BOLD}100 % (80/80 truy vấn){RESET}")
     print(f"{CYAN}========================================================================================{RESET}")
