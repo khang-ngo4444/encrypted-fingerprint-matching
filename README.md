@@ -41,7 +41,7 @@ và FVC2004 — tổng cộng 960 ảnh thuộc 120 ngón khác nhau. Bảng đo
 `tools/rank_survey.py`.
 
 Trên bộ này, một lượt xác thực với 10 bản mẫu đã đăng ký cho sai lệch trung bình
-giữa bản mã và dữ liệu gốc là **0,0070 %**, và thứ tự xếp hạng trùng khớp hoàn toàn
+giữa bản mã và dữ liệu gốc là **0,0084 %**, và thứ tự xếp hạng trùng khớp hoàn toàn
 với khi tính trên dữ liệu gốc. Số liệu từng bản ghi nằm ở `bench/workflow.csv`.
 
 > **Phạm vi áp dụng.** Các chỉ số trên đánh giá *lớp mã hoá*, không phải độ chính

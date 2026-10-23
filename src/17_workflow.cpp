@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
         cout << " Thoi gian ma hoa   : " << t_enc << " ms\n";
         cout << " Goi gui len server : " << ct_bytes / 1024.0 << " KB\n";
     }
-    cout << " Khoa bi mat        : O LAI tren thiet bi, khong gui di\n";
+    cout << " Khoa bi mat        : o lai tren thiet bi\n";
 
     Ciphertext ct_q;
     build(q, ct_q);
@@ -223,7 +223,7 @@ int main(int argc, char *argv[])
     cout << " Co so du lieu      : " << db.size() << " ban ghi, cung o dang ban ma\n";
     cout << " Phep tinh          : tru -> binh phuong -> cong don " << FP_DIM
          << " chieu (" << steps.size() << " vong xoay)\n";
-    cout << " Server giu khoa?   : KHONG - khong giai ma duoc bat ky gi\n\n";
+    cout << " Server giu khoa    : khong\n\n";
 
     vector<Row> rows;
     vector<Ciphertext> results;
@@ -255,9 +255,8 @@ int main(int argc, char *argv[])
     }
     double t_server = chrono::duration<double, milli>(Clock::now() - t_server0).count();
 
-    cout << " Da tinh xong " << db.size() << " phep so khop trong " << t_server
-         << " ms\n";
-    cout << " Server tra ve " << db.size() << " ket qua, tat ca VAN O DANG BAN MA\n";
+    cout << " So phep so khop    : " << db.size() << " trong " << t_server << " ms\n";
+    cout << " Ket qua tra ve     : " << db.size() << " gia tri, dang ban ma\n";
 
     // ------------------------------------------ 4. client giai ma
     banner("4", "CLIENT", "giai ma ket qua va ra quyet dinh");
@@ -330,9 +329,6 @@ int main(int argc, char *argv[])
     cout << " Tong mot luot      : " << t_enc + t_server + t_dec << " ms"
          << "  (ma hoa " << t_enc << " + so khop " << t_server << " + giai ma " << t_dec
          << ")\n";
-
-    cout << "\n Server khong giai ma o bat ky buoc nao. Moi con so trong bang\n";
-    cout << " chi doc duoc sau khi client dung khoa bi mat cua minh.\n";
 
     fs::create_directories(fs::path(csvout).parent_path());
     ofstream f(csvout);
