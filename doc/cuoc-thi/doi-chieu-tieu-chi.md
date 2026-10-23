@@ -11,7 +11,7 @@ Ký hiệu: **Đã có** — có bằng chứng cụ thể, trích dẫn đượ
 
 ### 1.1 Sự cần thiết đối với nhu cầu thị trường và cộng đồng (5 điểm) — Đã có
 
-Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 và Nghị định 356/2025/NĐ-CP có hiệu lực từ
+Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 có hiệu lực từ
 01/01/2026, xếp dữ liệu sinh trắc vào nhóm nhạy cảm. Mọi tổ chức đang lưu vân tay nhân
 viên hoặc khách hàng phải chứng minh được biện pháp bảo vệ.
 
