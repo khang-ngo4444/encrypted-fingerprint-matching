@@ -51,7 +51,7 @@ Phần lớn nội dung dự án là tự thực hiện; ba nguồn bên ngoài 
 |---|---|---|
 | Microsoft SEAL 4.4.4 | MIT | Thư viện tính toán, tải từ upstream |
 | SEAL-Embedded | MIT | Thư viện mã hoá phía gửi, tải từ upstream |
-| FVC2002 DB1_B | Điều khoản riêng, hạn chế phát hành lại | Dữ liệu kiểm chứng, không kèm trong repo |
+| FVC2004 DB3_B | Điều khoản riêng, hạn chế phát hành lại | Dữ liệu kiểm chứng, chỉ kèm vector đặc trưng |
 
 ---
 

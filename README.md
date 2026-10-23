@@ -24,25 +24,30 @@ Phần tính toán đồng cấu được xây dựng trên **Microsoft SEAL 4.4
 | Giải mã kết quả | 0,72 ms |
 | **Tổng một truy vấn, đầu đến cuối** | **26,51 ms** |
 
-Kiểm chứng trên bộ dữ liệu chuẩn quốc tế FVC2002 DB1_B gồm 80 ảnh vân tay thật,
+Kiểm chứng trên bộ dữ liệu chuẩn quốc tế FVC2004 DB3_B gồm 80 ảnh vân tay thật,
 so khớp toàn bộ 3.160 cặp:
 
 | Chỉ số | Giá trị |
 |---|---:|
-| Sai lệch trung bình giữa bản mã và dữ liệu gốc | 0,0096 % |
-| Truy vấn cho kết quả trùng với tính trên dữ liệu gốc | 100 % (80/80) |
-| Tỉ lệ giữ đúng thứ tự xếp hạng | 99,71 % |
+| Sai lệch tương đối trung bình giữa bản mã và dữ liệu gốc | 0,0091 % |
+| Sai lệch tương đối lớn nhất | 0,23 % |
+| Truy vấn cho kết quả gần nhất trùng với tính trên dữ liệu gốc | 100 % (80/80) |
+| Tỉ lệ giữ đúng thứ tự xếp hạng, trên 246.480 cặp thứ tự | 99,99 % |
+| Tỉ lệ quyết định khớp/không-khớp không đổi, quét 211 ngưỡng | 99,91 % |
 
-### Bộ dữ liệu dùng cho bản demo
+Mười chín cặp bị đảo thứ tự đều là những cặp cách nhau dưới 0,028 đơn vị, trong khi
+sai lệch tuyệt đối lớn nhất do mã hoá là 0,096. Nói cách khác, thứ tự chỉ đổi khi hai
+bản ghi gần nhau tới mức chính sàn nhiễu không phân biệt nổi.
 
-`demo.sh` chạy trên **FVC2004 DB3_B**. Bộ này được chọn sau khi đo tỉ lệ nhận đúng
-hạng 1 của bộ trích đặc trưng trên toàn bộ 12 bộ ảnh công khai của FVC2000, FVC2002
-và FVC2004 — tổng cộng 960 ảnh thuộc 120 ngón khác nhau. Bảng đo sinh bằng
-`tools/rank_survey.py`.
+### Vì sao chọn bộ dữ liệu này
 
-Trên bộ này, một lượt xác thực với 10 bản mẫu đã đăng ký cho sai lệch trung bình
-giữa bản mã và dữ liệu gốc là **0,0084 %**, và thứ tự xếp hạng trùng khớp hoàn toàn
-với khi tính trên dữ liệu gốc. Số liệu từng bản ghi nằm ở `bench/workflow.csv`.
+Bộ được chọn sau khi đo tỉ lệ nhận đúng hạng 1 của bộ trích đặc trưng trên toàn bộ
+12 bộ ảnh công khai của FVC2000, FVC2002 và FVC2004 — tổng cộng 960 ảnh thuộc 120
+ngón khác nhau. Bảng đo sinh bằng `tools/rank_survey.py`. FVC2004 DB3_B cho kết quả
+cao nhất trong nhóm dùng cảm biến thật.
+
+`demo.sh` chạy một lượt xác thực trên bộ này với 10 bản mẫu đã đăng ký; số liệu từng
+bản ghi nằm ở `bench/workflow.csv`.
 
 > **Phạm vi áp dụng.** Các chỉ số trên đánh giá *lớp mã hoá*, không phải độ chính
 > xác nhận dạng. Độ chính xác nhận dạng phụ thuộc bộ trích đặc trưng, vốn là thành
@@ -121,7 +126,7 @@ theo đường dẫn tương đối.
 | `src/11_fingerprint_match.cpp` | Máy chủ tiếp nhận bản mã và tính khoảng cách Euclidean trên bản mã |
 | `src/12_benchmark.cpp` | Đo thời gian từng phép toán đồng cấu phía máy chủ |
 | `src/13_bench_device.c` | Đo thời gian mã hoá phía gửi |
-| `src/14_fidelity.cpp` | Kiểm chứng độ trung thực trên toàn bộ 3.160 cặp FVC2002 |
+| `src/14_fidelity.cpp` | Kiểm chứng độ trung thực trên toàn bộ 3.160 cặp của tập ảnh đưa vào |
 | `src/15_bench_pipeline.cpp` | Đo tổng thời gian toàn luồng trong một tiến trình |
 | `src/15_device_shim.c` | Lớp trung gian cho thư viện mã hoá phía gửi, vì header của thư viện này chỉ biên dịch được bằng trình biên dịch C |
 | `src/16_match_report.cpp` | Sinh bảng kết quả một lượt nhận dạng và xuất CSV |

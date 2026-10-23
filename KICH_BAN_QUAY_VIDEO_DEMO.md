@@ -68,7 +68,7 @@
   > *"Đây là hệ thống đang chạy thật trên phần cứng Raspberry Pi 5. Một mẫu vân tay được so khớp với 79 bản ghi trong cơ sở dữ liệu.*  
   > *(Dừng 2 giây để bảng số liệu hiện ra)*  
   > *Hai cột này là cùng một đại lượng khoảng cách. Cột trái tính theo cách thông thường, cột phải tính hoàn toàn trên bản mã FHE. Thứ hạng của hai cột trùng khớp nhau tuyệt đối.*  
-  > *Chúng tôi kiểm chứng trên bộ chuẩn quốc tế FVC2002 gồm 3.160 cặp vân tay thật: sai số trung bình chỉ 0,0096%. Cả 80/80 truy vấn đều cho kết quả giống hệt khi tính trên dữ liệu gốc.*  
+  > *Chúng tôi kiểm chứng trên bộ chuẩn quốc tế FVC2004 DB3_B gồm 3.160 cặp vân tay thật: sai số trung bình chỉ 0,0091%. Cả 80/80 truy vấn đều cho kết quả giống hệt khi tính trên dữ liệu gốc.*  
   > *Một lượt truy vấn chỉ tốn 26,51 mili giây!"*
 
 ---
@@ -135,5 +135,5 @@
 
 Nếu bạn cần hỗ trợ các khâu kỹ thuật:
 1. **Chuyển đổi / Nén video bằng FFmpeg**: Nếu sau khi bạn quay xong dung lượng vượt quá 500 MB, tôi có thể chạy lệnh FFmpeg nén xuống đúng chuẩn 1080p dung lượng ~100 MB mà không giảm chất lượng.
-2. **Xuất ảnh bảng số liệu, biểu đồ slide độ phân giải cao**: Tôi có thể tự động trích xuất các biểu đồ benchmark FVC2002 ra định dạng ảnh chuẩn để bạn chèn vào phần dựng CapCut.
+2. **Xuất ảnh bảng số liệu, biểu đồ slide độ phân giải cao**: Tôi có thể tự động trích xuất các biểu đồ benchmark FVC2004 DB3_B ra định dạng ảnh chuẩn để bạn chèn vào phần dựng CapCut.
 3. **Chỉnh sửa số liệu / kịch bản theo yêu cầu**: Nếu bạn muốn điều chỉnh phần thuyết trình nào, chỉ cần nhắn tôi sẽ sửa ngay.

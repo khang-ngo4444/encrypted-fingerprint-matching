@@ -48,7 +48,7 @@ def chart_fidelity(rows, out):
     ax.set_xlim(lim); ax.set_ylim(lim)
     ax.set_xlabel("Khoảng cách tính trên dữ liệu gốc")
     ax.set_ylabel("Khoảng cách tính trên dữ liệu đã mã hoá")
-    ax.set_title(f"Mã hoá không làm lệch kết quả\n{len(rows)} cặp vân tay thật — FVC2002 DB1_B",
+    ax.set_title(f"Mã hoá không làm lệch kết quả\n{len(rows)} cặp vân tay thật — FVC2004 DB3_B",
                  fontsize=12, pad=12)
     ax.legend(loc="upper left", framealpha=0.95, fontsize=9)
     save(fig, os.path.join(out, "01_do_trung_thuc.png"))

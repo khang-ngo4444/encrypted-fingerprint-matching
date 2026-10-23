@@ -92,14 +92,14 @@ Ba thẻ dọc:
 | | |
 |---|---|
 | **26,51 ms** | một truy vấn, đo từ lúc mã hoá tới khi ra kết quả |
-| **0,0096 %** | sai lệch so với tính trên dữ liệu gốc |
+| **0,0091 %** | sai lệch so với tính trên dữ liệu gốc |
 | **80/80** | truy vấn cho kết quả giống hệt bản gốc |
 
 Số: 72 pt lục. Chú thích: 24 pt.
 
 Dưới ba thẻ, một dòng nhỏ:
 
-> Kiểm chứng trên FVC2002 DB1_B — 80 ảnh vân tay thật, 3.160 cặp so khớp
+> Kiểm chứng trên FVC2004 DB3_B — 80 ảnh vân tay thật, 3.160 cặp so khớp
 
 ---
 

@@ -99,8 +99,8 @@ cd device && ../build/16_match_report 101_1 79
 > Hai cột này là cùng một đại lượng. Cột trái tính theo cách thông thường, cột phải tính
 > hoàn toàn trên bản mã. Hai cột thứ hạng trùng nhau ở cả 79 dòng.
 >
-> Chúng tôi kiểm chứng trên FVC2002 — bộ dữ liệu chuẩn quốc tế, 3.160 cặp. Sai lệch trung
-> bình 0,0096%. Cả 80 truy vấn đều cho kết quả giống hệt khi tính trên dữ liệu gốc.
+> Chúng tôi kiểm chứng trên FVC2004 DB3_B — bộ dữ liệu chuẩn quốc tế, 3.160 cặp. Sai lệch
+> trung bình 0,0091%. Cả 80 truy vấn đều cho kết quả giống hệt khi tính trên dữ liệu gốc.
 >
 > Một truy vấn mất 26,51 mili giây.
 

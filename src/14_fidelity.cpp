@@ -6,7 +6,7 @@
 //
 //     Cam bat ky bo trich nao vao, ket qua co doi khong khi chay qua ma hoa?
 //
-// Do tren TOAN BO cap cua tap FVC2002 DB1_B that: 80 anh, C(80,2) = 3160 cap.
+// Do tren TOAN BO cap cua tap anh dua vao: 80 anh -> C(80,2) = 3160 cap.
 // Voi moi cap, so khoang cach Euclidean tinh tren ban ma voi tinh tren ban ro.
 
 #include "seal/seal.h"
@@ -15,6 +15,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -23,6 +24,10 @@
 #include <sstream>
 #include <string>
 #include <vector>
+
+#ifndef CME_ROOT
+#define CME_ROOT "/home/ourpi/CoreMetEncrypt"
+#endif
 
 using namespace std;
 using namespace seal;
@@ -55,10 +60,13 @@ struct Entry
 
 int main(int argc, char *argv[])
 {
-    string ctdir  = (argc > 1) ? argv[1] : CME_ROOT "/ct_fvc";
-    string bindir = (argc > 2) ? argv[2] : CME_ROOT "/data";
-    string keydir = CME_ROOT "/device/adapter_output_data/";
-    string csvout = CME_ROOT "/bench/fidelity.csv";
+    const char *root_env = getenv("CME_ROOT");
+    string root   = (root_env && *root_env) ? string(root_env) : string(CME_ROOT);
+    string ctdir  = (argc > 1) ? argv[1] : root + "/ct_demo";
+    string bindir = (argc > 2) ? argv[2] : root + "/data";
+    string tapds  = (argc > 3) ? argv[3] : "FVC2004 DB3_B";
+    string keydir = root + "/device/adapter_output_data/";
+    string csvout = root + "/bench/fidelity.csv";
 
     size_t degree = 4096;
     EncryptionParameters parms(scheme_type::ckks);
@@ -122,7 +130,7 @@ int main(int argc, char *argv[])
     cout << "=================================================================\n";
     cout << " DO TRUNG THUC — ban ma so voi ban ro, tren du lieu van tay THAT\n";
     cout << "=================================================================\n";
-    cout << " Tap du lieu : FVC2002 DB1_B\n";
+    cout << " Tap du lieu : " << tapds << "\n";
     cout << " So anh      : " << E.size() << "\n";
     cout << " So cap      : " << E.size() * (E.size() - 1) / 2 << "\n\n";
     if (E.size() < 2) { cout << "Khong du du lieu\n"; return 1; }

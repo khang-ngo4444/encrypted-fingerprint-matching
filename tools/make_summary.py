@@ -152,7 +152,7 @@ if fid:
         pairs.append((p, m, abs(num(r.get("sai_so_tuyet_doi"), 0.0)), r.get("cung_ngon") == "1"))
     rel = [e / p * 100 for p, _, e, _ in pairs if p > 1e-9]
     gen = sum(1 for *_, g in pairs if g)
-    add("Do trung thuc", "Tap du lieu", "FVC2002 DB1_B", "",
+    add("Do trung thuc", "Tap du lieu", "FVC2004 DB3_B", "",
         ghi_chu="80 anh van tay that, 10 ngon x 8 lan quet")
     add("Do trung thuc", "So cap da so", len(pairs), "cap")
     add("Do trung thuc", "  trong do cung ngon", gen, "cap")

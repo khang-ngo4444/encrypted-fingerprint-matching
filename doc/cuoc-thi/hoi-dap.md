@@ -18,25 +18,25 @@ tính cũng ở dạng mã, giải ra thì đúng bằng kết quả tính trên
 cũng vậy. Khoảng cách Euclidean chỉ gồm trừ, bình phương và cộng dồn — cả ba đều làm được
 trên bản mã. Bước cộng dồn 512 chiều dùng phép xoay vector, 9 vòng cho 512 chiều.
 
-### "Sai số 0,0096% là gì? Tại sao có sai số?"
+### "Sai số 0,0091% là gì? Tại sao có sai số?"
 
 **Ngắn:** CKKS là mã hoá xấp xỉ, mỗi phép tính thêm một lượng nhiễu rất nhỏ. Câu hỏi quan
 trọng không phải lệch bao nhiêu mà lệch đó có đủ đổi quyết định không. Trên cả 80 truy vấn,
-không một quyết định nào bị đổi.
+bản ghi gần nhất không đổi lấy một lần.
 
 **Sâu:** Nhiễu của CKKS là tuyệt đối, không phải tương đối — sàn nhiễu gần như cố định. Vì
 vậy chúng tôi nhân vector với một hệ số cố định trước khi mã hoá: khoảng cách tăng theo bình
 phương hệ số trong khi nhiễu đứng yên, đưa sai số tương đối về mức 0,01%.
 
-### "Con số 99,71% giữ thứ tự xếp hạng — 0,29% còn lại thì sao?"
+### "Con số 99,99% giữ thứ tự xếp hạng — phần còn lại thì sao?"
 
-**Ngắn:** 18 trên 6.240 cặp liền kề bị đảo thứ tự. Nhưng cả 18 cặp đó đều là những bản ghi
-cách nhau dưới 0,035, trong khi sai số mã hoá trung bình là 0,031. Chỉ đảo khi hai bản ghi
-gần nhau tới mức không phân biệt được, nên không quyết định nào thay đổi.
+**Ngắn:** 19 trên 246.480 cặp thứ tự bị đảo. Cả 19 cặp đó đều cách nhau dưới 0,028, trong
+khi sai lệch tuyệt đối lớn nhất do mã hoá là 0,096. Chỉ đảo khi hai bản ghi gần nhau tới
+mức chính sàn nhiễu không phân biệt nổi, nên bản ghi gần nhất không đổi ở truy vấn nào.
 
-**Sâu:** Bản báo cáo đầu tiên của chúng tôi ghi 100%. Con số đó sai, do phép đo lấy mẫu thưa
-— 561 phép so trên 3.160 cặp nên bỏ sót. Chúng tôi đo lại đầy đủ và ghi lại cả sai sót này
-trong báo cáo, mục 12.4.
+**Sâu:** Phép đo sẵn có trong chương trình chỉ lấy mẫu thưa 561 phép so, và cho ra 100%
+tròn trịa. Chúng tôi tính lại trên toàn bộ 246.480 cặp thứ tự mới ra con số thật là
+99,99%. Quá trình này ghi trong báo cáo, mục 12.4.
 
 ### "26 mili giây có chậm không? So với hệ thống thường thì sao?"
 
@@ -65,8 +65,13 @@ trên máy chủ — máy chủ bị xâm nhập cũng không có khoá.
 ### "Độ chính xác nhận dạng bao nhiêu phần trăm?"
 
 **Ngắn:** Trên bộ trích đặc trưng chúng tôi tự viết để kiểm thử, tỉ lệ nhận đúng ở hạng 1
-là 70%. Nhưng con số đó đo năng lực của bộ trích đặc trưng, không phải của lớp mã hoá — nó
-giống hệt nhau khi tính trên dữ liệu gốc và khi tính trên bản mã.
+là 90,0% theo giao thức leave-one-out, và 71,4% theo mô hình mỗi người đăng ký một bản mẫu.
+Con số đó đo năng lực của bộ trích đặc trưng, không phải của lớp mã hoá — nó giống hệt nhau
+khi tính trên dữ liệu gốc và khi tính trên bản mã.
+
+Phải nói rõ giao thức nào, vì hai con số chênh nhau gần 20 điểm. Leave-one-out cho mỗi truy
+vấn so với 7 lần quét khác của cùng ngón; mô hình một bản mẫu chỉ có đúng một bản để so, và
+đó mới là cách hệ thống chấm công chạy thật.
 
 **Sâu:** Chúng tôi bán lớp bảo mật, không bán bộ nhận dạng. Khách hàng đã có bộ trích đặc
 trưng của họ, thường là sản phẩm thương mại chính xác hơn nhiều. Việc chúng tôi phải chứng

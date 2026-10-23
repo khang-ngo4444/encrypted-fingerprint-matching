@@ -29,13 +29,13 @@ Kich thuoc,Ciphertext gui len server,96,KB,,,,
 Kich thuoc,Relinearization key,0.7504,MB,,,,truyen mot lan luc thiet lap
 Kich thuoc,Galois key,6.7842,MB,,,,truyen mot lan luc thiet lap
 Kich thuoc,He so phinh du lieu,192,lan,,,,
-Do trung thuc,Tap du lieu,FVC2002 DB1_B,,,,,"80 anh van tay that, 10 ngon x 8 lan quet"
+Do trung thuc,Tap du lieu,FVC2004 DB3_B,,,,,"80 anh van tay that, 10 ngon x 8 lan quet"
 Do trung thuc,So cap da so,3160,cap,,,,
 Do trung thuc,  trong do cung ngon,280,cap,,,,
 Do trung thuc,  trong do khac ngon,2880,cap,,,,
-Do trung thuc,Sai so tuong doi do ma hoa,0.0096,%,0.0091,0,0.2062,ban ma so voi ban ro
-Do trung thuc,Giu dung thu tu xep hang,99.7115,%,,,,6222/6240 cap lien ke
-Do trung thuc,Khoang cach giua hai ban ghi bi dao,0.035,,,,,lon nhat; nho hon sai so ma hoa nen khong doi quyet dinh
+Do trung thuc,Sai so tuong doi do ma hoa,0.0091,%,0.0101,0,0.2309,ban ma so voi ban ro
+Do trung thuc,Giu dung thu tu xep hang,99.6955,%,,,,6221/6240 cap lien ke
+Do trung thuc,Khoang cach giua hai ban ghi bi dao,0.028,,,,,lon nhat; nho hon sai so ma hoa nen khong doi quyet dinh
 Do trung thuc,Truy van giu nguyen toan bo thu tu,78.75,%,,,,"63/80 truy van, moi truy van xep hang 79 ban ghi"
 Do trung thuc,Truy van giu nguyen ket qua hang 1,100,%,,,,80/80 truy van
 Do trung thuc,So truy van cho ket qua khac ban goc,0,truy van,,,,

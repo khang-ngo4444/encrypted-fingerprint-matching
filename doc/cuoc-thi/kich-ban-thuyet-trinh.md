@@ -56,14 +56,14 @@ Số trang slide theo bản 13 trang hiện có.
 
 > Câu hỏi đầu tiên ai cũng hỏi: mã hoá như vậy thì kết quả có còn đúng không?
 >
-> Chúng tôi kiểm chứng trên FVC2002 DB1_B — bộ dữ liệu chuẩn quốc tế, 80 ảnh vân tay thật,
+> Chúng tôi kiểm chứng trên FVC2004 DB3_B — bộ dữ liệu chuẩn quốc tế, 80 ảnh vân tay thật,
 > so khớp toàn bộ 3.160 cặp.
 >
 > *(chỉ vào biểu đồ)* Mỗi chấm là một cặp vân tay. Trục ngang là khoảng cách tính theo cách
 > thông thường. Trục dọc là cùng khoảng cách đó nhưng tính hoàn toàn trên bản mã. Mọi chấm
 > đều nằm trên đường chéo.
 >
-> Sai lệch trung bình 0,0096%. Trên cả 80 truy vấn, kết quả nhận dạng trùng khớp hoàn toàn
+> Sai lệch trung bình 0,0091%. Trên cả 80 truy vấn, bản ghi gần nhất trùng khớp hoàn toàn
 > với khi tính trên dữ liệu gốc. Không một quyết định nào bị đổi.
 >
 > Câu hỏi thứ hai: chậm đến mức nào? Một truy vấn, đo từ lúc thiết bị nhận dữ liệu tới khi
@@ -131,7 +131,7 @@ Tiêu chí 8.2 chấm tinh thần làm việc nhóm, nên cả hai thành viên 
 
 **Không đọc slide.** Slide đã viết đủ ý, người nói bổ sung ngữ cảnh chứ không lặp lại.
 
-**Ba con số phải nhớ nằm lòng:** 26,51 ms · 0,0096% · 80/80. Nếu quên mọi thứ khác, ba con
+**Ba con số phải nhớ nằm lòng:** 26,51 ms · 0,0091% · 80/80. Nếu quên mọi thứ khác, ba con
 số này vẫn phải nói đúng.
 
 **Nếu bị hỏi giữa chừng:** trả lời ngắn, hẹn phần hỏi đáp cho câu dài. Thời lượng tính cả

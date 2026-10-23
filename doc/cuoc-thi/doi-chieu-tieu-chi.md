@@ -48,9 +48,9 @@ nêu trong `README.md` của repo.
 | Bằng chứng | Giá trị |
 |---|---|
 | Thời gian một truy vấn, đo đầu đến cuối | 26,51 ms |
-| Sai lệch so với tính trên dữ liệu gốc | 0,0096 % |
+| Sai lệch so với tính trên dữ liệu gốc | 0,0091 % |
 | Truy vấn cho kết quả giống hệt bản gốc | 80/80 |
-| Quy mô kiểm chứng | 3.160 cặp, dữ liệu chuẩn quốc tế FVC2002 DB1_B |
+| Quy mô kiểm chứng | 3.160 cặp, dữ liệu chuẩn quốc tế FVC2004 DB3_B |
 
 ---
 

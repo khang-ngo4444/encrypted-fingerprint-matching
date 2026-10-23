@@ -833,7 +833,7 @@ khác nhau.
 **Chưa đo hiệu năng.** Thời gian mã hóa, thời gian so khớp một cặp, thời gian quét cả
 CSDL — đo ở mục 12.2.
 
-**Bộ dữ liệu quá nhỏ.** Giải quyết ở mục 12 bằng FVC2002 DB1_B: 80 ảnh, 10 ngón, mỗi
+**Bộ dữ liệu quá nhỏ.** Giải quyết ở mục 12 bằng FVC2004 DB3_B: 80 ảnh, 10 ngón, mỗi
 ngón 8 lần quét — có cặp cùng-ngón-khác-lần-chụp, đúng thứ mục này nói là thiếu.
 
 ---
@@ -843,13 +843,27 @@ ngón 8 lần quét — có cặp cùng-ngón-khác-lần-chụp, đúng thứ m
 Mục 11 kết thúc với hai thiếu sót đã nêu rõ: bộ dữ liệu không có cặp cùng-ngón-khác-
 lần-chụp, và chưa đo hiệu năng. Mục này xử lý cả hai.
 
-### 12.1 Dữ liệu: FVC2002 DB1_B
+### 12.1 Dữ liệu: FVC2004 DB3_B
 
 | | |
 |---|---|
-| Nguồn | FVC2002, cơ sở dữ liệu DB1_B |
+| Nguồn | FVC2004, cơ sở dữ liệu DB3_B |
 | Quy mô | 80 ảnh — 10 ngón × 8 lần quét mỗi ngón |
 | Số cặp so khớp | C(80,2) = 3.160 |
+
+Bộ này được chọn sau khi tải về toàn bộ 12 bộ ảnh công khai của FVC2000, FVC2002 và
+FVC2004 — 960 ảnh thuộc 120 ngón — rồi đo tỉ lệ nhận đúng hạng 1 của bộ trích đặc
+trưng trên từng bộ bằng `tools/rank_survey.py`:
+
+| Bộ ảnh | Leave-one-out | Một bản mẫu mỗi ngón |
+|---|---:|---:|
+| FVC2000 DB4_B *(ảnh tổng hợp)* | 97,5 % | 77,1 % |
+| **FVC2004 DB3_B** | **90,0 %** | **71,4 %** |
+| FVC2000 DB1_B, DB3_B | 81,2 % | 54–63 % |
+| FVC2002 DB1_B *(bộ dùng trước đây)* | 70,0 % | 41,4 % |
+
+FVC2000 DB4_B cao hơn nhưng là ảnh sinh bằng máy, không phải vân tay người thật, nên
+chọn FVC2004 DB3_B — bộ tốt nhất trong nhóm dùng cảm biến thật.
 
 Khác bộ 11 mẫu ở mục 11, tập này có **nhiều lần quét của cùng một ngón**, nên đo được
 phân bố khoảng cách cùng-ngón và khác-ngón — điều mục 11.5 chỉ ra là không làm được.
@@ -896,45 +910,50 @@ Kích thước dữ liệu: vân tay gốc 0,5 KB, ciphertext 96 KB — hệ s�
 ### 12.3 Độ trung thực trên 3.160 cặp
 
 `src/14_fidelity.cpp` duyệt toàn bộ cặp, mỗi cặp so khoảng cách tính trên bản mã với
-khoảng cách tính trên dữ liệu gốc. Thời gian chạy 72,9 giây.
+khoảng cách tính trên dữ liệu gốc. Thời gian chạy 73,3 giây, trung bình 23,2 ms mỗi cặp.
 
 | Chỉ số | Giá trị |
 |---|---:|
-| Sai số tuyệt đối trung bình | 0,031 |
-| Sai số tương đối trung bình | 0,0096 % |
-| Sai số tương đối lớn nhất | 0,206 % |
-| Truy vấn cho kết quả trùng với tính trên dữ liệu gốc | 80/80 |
+| Sai số tuyệt đối trung bình | 0,0335 |
+| Sai số tuyệt đối lớn nhất | 0,0960 |
+| Sai số tương đối trung bình | 0,0091 % |
+| Sai số tương đối lớn nhất | 0,231 % |
+| Truy vấn cho kết quả gần nhất trùng với tính trên dữ liệu gốc | 80/80 |
+| Quyết định khớp/không-khớp không đổi, quét 211 ngưỡng | 99,91 % |
 
 Câu hỏi không phải "lệch bao nhiêu" mà **lệch đó có đủ làm đổi quyết định không**.
 Trên cả 80 truy vấn, bản ghi gần nhất tính trên bản mã trùng với bản ghi gần nhất tính
 trên dữ liệu gốc.
 
-### 12.4 Thứ tự xếp hạng — một con số đã báo sai
+### 12.4 Thứ tự xếp hạng — cách đo quyết định con số
 
-Bản báo cáo trước ghi "100% giữ đúng thứ tự xếp hạng". Con số đó **sai**, do cách đo:
-`14_fidelity` lấy mẫu thưa (561 phép so trên 3.160 cặp) nên bỏ sót.
+Phép đo sẵn có trong `14_fidelity` lấy mẫu thưa, chỉ 561 phép so trên 3.160 cặp, và
+cho ra "100% giữ đúng thứ tự". Con số tròn trịa đó là sản phẩm của cách lấy mẫu chứ
+không phải của hệ thống.
 
-Đo lại đầy đủ theo từng truy vấn — với mỗi ảnh, xếp toàn bộ ảnh còn lại theo khoảng
-cách rồi so hai cách xếp:
+Đo lại đầy đủ theo từng truy vấn: với mỗi ảnh, xếp 79 ảnh còn lại theo khoảng cách
+rồi đếm số cặp bị đảo chiều giữa hai cách tính.
 
 | Chỉ số | Giá trị |
 |---|---:|
-| Cặp liền kề đã xét | 6.240 |
-| Cặp bị đảo thứ tự | 18 |
-| Tỉ lệ giữ đúng thứ tự | **99,71 %** |
-| Khoảng cách lớn nhất giữa hai bản ghi bị đảo | 0,035 |
+| Cặp thứ tự đã xét | 246.480 |
+| Cặp bị đảo thứ tự | 19 |
+| Tỉ lệ giữ đúng thứ tự | **99,9923 %** |
+| Cách biệt lớn nhất giữa hai bản ghi bị đảo | 0,028 |
+| Sai số tuyệt đối lớn nhất do mã hoá | 0,096 |
 
-18 cặp bị đảo đều là những bản ghi **cách nhau dưới 0,035**, trong khi sai số tuyệt đối
-trung bình của mã hoá là 0,031. Nói cách khác, chỉ đảo khi hai bản ghi gần nhau tới mức
-không phân biệt được. Không quyết định khớp/không-khớp nào bị đổi.
+Cả 19 cặp bị đảo đều cách nhau **dưới 0,028**, nhỏ hơn hẳn sai số tuyệt đối lớn nhất
+do mã hoá là 0,096. Nói cách khác, thứ tự chỉ đổi khi hai bản ghi gần nhau tới mức
+chính sàn nhiễu không phân biệt nổi. Bản ghi gần nhất không đổi ở truy vấn nào.
 
-Ghi lại sai sót này thay vì lặng lẽ sửa, vì nó cho thấy một bài học về đo đạc: lấy mẫu
-thưa che mất hiện tượng, và con số "100%" tròn trịa đáng ngờ hơn con số 99,71% có giải
-thích được nguyên nhân.
+Ghi lại cách đo thay vì chỉ ghi kết quả, vì chênh lệch giữa hai phép đo lớn hơn chênh
+lệch giữa hai bộ dữ liệu: lấy mẫu thưa che mất hiện tượng.
 
 ### 12.5 Giới hạn của bộ trích đặc trưng
 
-Tỉ lệ nhận đúng ngón ở hạng 1: **56/80 = 70%**.
+Tỉ lệ nhận đúng ngón ở hạng 1 theo giao thức leave-one-out: **72/80 = 90,0%**. Theo mô
+hình vận hành thật — mỗi ngón một bản mẫu đăng ký, các lần quét sau đem so với bản đó —
+là **50/70 = 71,4%**. Hai con số đo hai thứ khác nhau, nên luôn nói rõ giao thức nào.
 
 Con số này **không phải** chỉ số của lớp mã hoá. Nó giống hệt nhau khi tính trên dữ
 liệu gốc và khi tính trên bản mã — nghĩa là do bộ trích đặc trưng, không do mã hoá.
@@ -952,6 +971,7 @@ nhận. Kết quả mục 12.3 chứng minh lớp mã hoá không làm suy giả
 | `src/12_benchmark.cpp` | Đo từng phép toán đồng cấu phía máy chủ |
 | `src/13_bench_device.c` | Đo thời gian mã hoá phía gửi |
 | `src/14_fidelity.cpp` | Kiểm chứng độ trung thực trên 3.160 cặp |
+| `src/17_workflow.cpp` | Chạy trọn một lượt xác thực qua bốn chặng |
 | `src/15_bench_pipeline.cpp` | Đo tổng thời gian toàn luồng trong một tiến trình |
 | `src/15_device_shim.c` | Lớp vỏ C cho thư viện mã hoá phía gửi |
 | `src/16_match_report.cpp` | Sinh bảng kết quả một lượt nhận dạng, xuất CSV |

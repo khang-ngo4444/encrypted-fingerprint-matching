@@ -85,9 +85,9 @@
   <h1>Hệ thống bảo mật dữ liệu vân tay — Báo cáo số liệu</h1>
   <div class="sub">So khớp vân tay trên dữ liệu đã mã hoá, máy chủ không giải mã ở bất kỳ bước nào</div>
   <div class="meta">
-    Đo ngày 18/10/2026 · Raspberry Pi 5, Cortex-A76 4 nhân 2,4 GHz, 8 GB RAM ·
+    Đo ngày 23/10/2026 · Raspberry Pi 5, Cortex-A76 4 nhân 2,4 GHz, 8 GB RAM ·
     Microsoft SEAL 4.4.4 + SEAL-Embedded · CKKS bậc 4096, 3 prime 27-bit,
-    scale 2<sup>25</sup>, mức bảo mật 128-bit · Dữ liệu kiểm chứng FVC2002 DB1_B
+    scale 2<sup>25</sup>, mức bảo mật 128-bit · Dữ liệu kiểm chứng FVC2004 DB3_B
   </div>
   <div class="legend">
     <span><i style="background:var(--ref)"></i>dữ liệu gốc</span>
@@ -174,15 +174,15 @@
 
 <section class="s-ok">
   <h2><span class="n">03</span> Mã hoá có làm sai kết quả không</h2>
-  <p class="lead">Kiểm chứng trên bộ dữ liệu chuẩn quốc tế FVC2002 DB1_B: 80 ảnh vân tay thật
+  <p class="lead">Kiểm chứng trên bộ dữ liệu chuẩn quốc tế FVC2004 DB3_B: 80 ảnh vân tay thật
   (10 ngón × 8 lần quét), so khớp toàn bộ 3.160 cặp. Với mỗi cặp, so kết quả tính trên
   bản mã với kết quả tính trên dữ liệu gốc.</p>
 
   <div class="cards">
     <div class="card t-ok">
-      <div class="val">0,0096<span class="unit">%</span></div>
+      <div class="val">0,0091<span class="unit">%</span></div>
       <div class="lab">Sai lệch trung bình</div>
-      <div class="note">Lớn nhất 0,2062%, độ lệch chuẩn 0,0091%</div>
+      <div class="note">Lớn nhất 0,2309%, độ lệch chuẩn 0,0101%</div>
     </div>
     <div class="card t-ok">
       <div class="val">100<span class="unit">%</span></div>
@@ -190,7 +190,7 @@
       <div class="note">0 trên 80 truy vấn cho kết quả khác bản gốc</div>
     </div>
     <div class="card t-ok">
-      <div class="val">99,71<span class="unit">%</span></div>
+      <div class="val">99,70<span class="unit">%</span></div>
       <div class="lab">Giữ đúng thứ tự xếp hạng</div>
       <div class="note">Tính trên 6.240 cặp bản ghi liền kề</div>
     </div>
@@ -271,5 +271,5 @@
 <footer>
   Hệ thống bảo mật dữ liệu vân tay · Ngô Hoàng Nhật Khang, Hồ Anh Tuấn ·
   Computer Science Engineering, VNUK · Trang này sinh tự động từ
-  <code>seal_flow/tools/make_dashboard.py</code> ngày 18/10/2026
+  <code>seal_flow/tools/make_dashboard.py</code> ngày 23/10/2026
 </footer>

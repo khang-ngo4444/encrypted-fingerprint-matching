@@ -268,7 +268,7 @@ doc = f"""<!doctype html>
   <div class="meta">
     Đo ngày {now} · Raspberry Pi 5, Cortex-A76 4 nhân 2,4 GHz, 8 GB RAM ·
     Microsoft SEAL 4.4.4 + SEAL-Embedded · CKKS bậc 4096, 3 prime 27-bit,
-    scale 2<sup>25</sup>, mức bảo mật 128-bit · Dữ liệu kiểm chứng FVC2002 DB1_B
+    scale 2<sup>25</sup>, mức bảo mật 128-bit · Dữ liệu kiểm chứng FVC2004 DB3_B
   </div>
   <div class="legend">
     <span><i style="background:var(--ref)"></i>dữ liệu gốc</span>
@@ -335,7 +335,7 @@ doc = f"""<!doctype html>
 
 <section class="s-ok">
   <h2><span class="n">03</span> Mã hoá có làm sai kết quả không</h2>
-  <p class="lead">Kiểm chứng trên bộ dữ liệu chuẩn quốc tế FVC2002 DB1_B: 80 ảnh vân tay thật
+  <p class="lead">Kiểm chứng trên bộ dữ liệu chuẩn quốc tế FVC2004 DB3_B: 80 ảnh vân tay thật
   (10 ngón × 8 lần quét), so khớp toàn bộ {vn(n_pairs, 0)} cặp. Với mỗi cặp, so kết quả tính trên
   bản mã với kết quả tính trên dữ liệu gốc.</p>
 
