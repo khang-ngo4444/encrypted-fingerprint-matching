@@ -53,7 +53,7 @@ if(EXISTS ${SE_LIB})
     # Nối cả hai đầu trong một tiến trình. 15_device_shim.c là lớp vỏ C: header
     # của SEAL-Embedded dùng cú pháp chỉ hợp lệ trong C nên không biên dịch được
     # bằng trình biên dịch C++.
-    foreach(prog 15_bench_pipeline 16_match_report)
+    foreach(prog 15_bench_pipeline 16_match_report 17_workflow)
         add_executable(${prog} src/${prog}.cpp src/15_device_shim.c)
         target_include_directories(${prog} PRIVATE ${SEAL_INCLUDES} ${SE_INCLUDES})
         target_compile_definitions(${prog} PRIVATE

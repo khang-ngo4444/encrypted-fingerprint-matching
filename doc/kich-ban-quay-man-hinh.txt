@@ -1,0 +1,25 @@
+# Kịch bản quay màn hình: đọc source rồi chạy chính source đó.
+# Chỉ có lệnh và dòng ra — không chèn câu dẫn.
+#   .venv/bin/python seal_flow/tools/make_screencast.py \
+#       seal_flow/doc/kich-ban-quay-man-hinh.txt seal_flow/doc/demo_terminal.mp4 \
+#       --cwd /home/ourpi/CoreMetEncrypt
+
+@clear
+@pause 1
+
+$ grep -n 'banner("' seal_flow/src/17_workflow.cpp
+@pause 4
+
+$ sed -n '173,182p' seal_flow/src/17_workflow.cpp
+@pause 4.5
+
+$ sed -n '233,242p' seal_flow/src/17_workflow.cpp
+@pause 5
+
+$ sed -n '263,269p' seal_flow/src/17_workflow.cpp
+@pause 4
+
+@clear
+@pause 1
+$ bash seal_flow/demo.sh 04d3-103_5 10
+@pause 6

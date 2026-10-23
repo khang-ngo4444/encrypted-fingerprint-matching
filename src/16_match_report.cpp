@@ -19,6 +19,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -57,6 +58,12 @@ static vector<double> parse_brace_line(const string &line)
     return out;
 }
 
+static string env_or(const char *key, const string &fallback)
+{
+    const char *v = getenv(key);
+    return (v && *v) ? string(v) : fallback;
+}
+
 struct Entry
 {
     string name;
@@ -79,10 +86,11 @@ int main(int argc, char *argv[])
 {
     string qname  = (argc > 1) ? argv[1] : "101_8";
     size_t ndb    = (argc > 2) ? (size_t)stoul(argv[2]) : 10;
-    string ctdir  = CME_ROOT "/ct_fvc";
-    string bindir = CME_ROOT "/data";
-    string keydir = CME_ROOT "/device/adapter_output_data/";
-    string csvout = CME_ROOT "/bench/match_report.csv";
+    string root   = env_or("CME_ROOT", "/home/ourpi/CoreMetEncrypt");
+    string ctdir  = env_or("CME_CT_DIR", root + "/seal_flow/ct_fvc");
+    string bindir = env_or("CME_BIN_DIR", root + "/datasets/fvc2002_db1b/bin");
+    string keydir = env_or("CME_KEY_DIR", root + "/device/adapter_output_data/");
+    string csvout = env_or("CME_CSV_OUT", root + "/seal_flow/bench/match_report.csv");
 
     // ----------------------------------------------------------- tham so CKKS
     EncryptionParameters parms(scheme_type::ckks);

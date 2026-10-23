@@ -33,6 +33,17 @@ so khớp toàn bộ 3.160 cặp:
 | Truy vấn cho kết quả trùng với tính trên dữ liệu gốc | 100 % (80/80) |
 | Tỉ lệ giữ đúng thứ tự xếp hạng | 99,71 % |
 
+### Bộ dữ liệu dùng cho bản demo
+
+`demo.sh` chạy trên **FVC2004 DB3_B**. Bộ này được chọn sau khi đo tỉ lệ nhận đúng
+hạng 1 của bộ trích đặc trưng trên toàn bộ 12 bộ ảnh công khai của FVC2000, FVC2002
+và FVC2004 — tổng cộng 960 ảnh thuộc 120 ngón khác nhau. Bảng đo sinh bằng
+`tools/rank_survey.py`.
+
+Trên bộ này, một lượt xác thực với 10 bản mẫu đã đăng ký cho sai lệch trung bình
+giữa bản mã và dữ liệu gốc là **0,0070 %**, và thứ tự xếp hạng trùng khớp hoàn toàn
+với khi tính trên dữ liệu gốc. Số liệu từng bản ghi nằm ở `bench/workflow.csv`.
+
 > **Phạm vi áp dụng.** Các chỉ số trên đánh giá *lớp mã hoá*, không phải độ chính
 > xác nhận dạng. Độ chính xác nhận dạng phụ thuộc bộ trích đặc trưng, vốn là thành
 > phần sẵn có của hệ thống tiếp nhận. Kết quả cho thấy lớp mã hoá không làm suy
@@ -76,7 +87,18 @@ bash setup.sh
 Script tải Microsoft SEAL 4.4.4 cùng các thành phần phụ thuộc từ upstream, áp dụng
 các sửa đổi cần thiết, sinh bộ khoá và biên dịch toàn bộ chương trình.
 
-Chạy thử:
+Chạy thử toàn bộ một lượt xác thực:
+
+```bash
+bash demo.sh
+```
+
+Lệnh này chạy `17_workflow`, đi hết bốn chặng của hệ thống trong một lần gọi:
+thiết bị đọc mẫu vân tay, mã hoá, máy chủ so khớp trên bản mã, rồi trả kết quả
+về cho phía giữ khoá giải mã. Kết quả từng bản ghi được ghi ra
+`bench/workflow.csv`.
+
+Các phép đo riêng lẻ:
 
 ```bash
 cd device && ../build/16_match_report 101_1 79   # bảng kết quả so khớp
@@ -103,6 +125,7 @@ theo đường dẫn tương đối.
 | `src/15_bench_pipeline.cpp` | Đo tổng thời gian toàn luồng trong một tiến trình |
 | `src/15_device_shim.c` | Lớp trung gian cho thư viện mã hoá phía gửi, vì header của thư viện này chỉ biên dịch được bằng trình biên dịch C |
 | `src/16_match_report.cpp` | Sinh bảng kết quả một lượt nhận dạng và xuất CSV |
+| `src/17_workflow.cpp` | Chạy trọn một lượt xác thực qua bốn chặng: đọc mẫu, mã hoá phía gửi, so khớp trên bản mã, giải mã kết quả |
 
 | Công cụ | Chức năng |
 |---|---|
@@ -111,6 +134,11 @@ theo đường dẫn tương đối.
 | `tools/make_dashboard.py` | Dựng trang báo cáo HTML từ dữ liệu CSV |
 | `tools/make_terminal_shot.py` | Thực thi chương trình, thu nhận kết quả và kết xuất thành ảnh |
 | `tools/make_charts.py`, `make_chart_*.py` | Vẽ biểu đồ từ số liệu đo |
+| `tools/npy_to_bin.py` | Chuyển vector đặc trưng sang định dạng nhị phân mà phần C/C++ đọc |
+| `tools/encrypt_set.sh` | Mã hoá hàng loạt một tập vector bằng thư viện phía gửi |
+| `tools/rank_survey.py` | Đo tỉ lệ nhận đúng hạng 1 của bộ trích đặc trưng trên từng bộ ảnh |
+| `tools/make_screencast.py` | Chạy thật một phiên dòng lệnh và kết xuất thành video |
+| `tools/make_terminal_png.py` | Chạy thật một lệnh và kết xuất kết quả thành ảnh |
 
 Phần mã hoá phía gửi sử dụng SEAL-Embedded, biến thể của Microsoft SEAL dành cho
 thiết bị tài nguyên hạn chế. Mã nguồn của cả hai thư viện không nằm trong repo này;
